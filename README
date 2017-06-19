@@ -1,0 +1,51 @@
+Blog: 
+http://www.itmuch.com/archives/
+http://blog.didispace.com/categories/Spring-Cloud/
+http://blog.csdn.net/column/details/15197.html
+
+Discuz(flarum):
+http://bbs.springcloud.cn/
+http://spring4all.com/
+
+Validate:
+config-server: 
+source ../bootstrap.rc && mvn spring-boot:run
+http://config-server:7001/service-test01/default/1.0.0
+http://config-server:7001/eureka-server/prod/1.0.0
+http://config-server:7001/refresh
+
+eureka-server: 
+source ../bootstrap.rc &&  SPRING_CLOUD_CONFIG_PROFILE=${EUREKA_SERVER01} mvn spring-boot:run
+source ../bootstrap.rc &&  SPRING_CLOUD_CONFIG_PROFILE=${EUREKA_SERVER02} mvn spring-boot:run
+http://eureka-server:8001/
+
+zuul-server: 
+source ../bootstrap.rc && mvn spring-boot:run
+http://zuul-server:5555/
+http://localhost:5555/api/service-test01/add?a=123&b=321
+http://localhost:5555/api/service-test02/add?a=123&b=321
+
+zuul-filter:
+http://localhost:5555/api/service-test02/add?a=123&b=321&accessToken=123456
+
+service-test01/02:
+source ../bootstrap.rc && mvn spring-boot:run
+
+zipkin-server:
+source ../bootstrap.rc && mvn spring-boot:run
+http://localhost:7777/dependency
+
+Application	AMIs	Availability Zones	Status
+EUREKA-SERVER	n/a (1)	(1)	UP (1) - eureka-server:8905df05da8661efcf77f53fc046728a
+SERVICE-TEST01	n/a (1)	(1)	UP (1) - service-test01:ddfce3066df20e7ae63ef5d4e37010eb
+SERVICE-TEST02	n/a (1)	(1)	UP (1) - service-test02:bc9ed2636229a5595b64063fa1d4f26e
+ZIPKIN-SERVER	n/a (1)	(1)	UP (1) - zipkin-server:a0f7d22b604f8ddbe18b09d345bb1e4a
+ZUUL-SERVER	n/a (1)	(1)	UP (1) - zuul-server:7ff3dccff361a67993d021c2829e1cf9
+
+http://blog.csdn.net/sharetop/article/details/49716897
+apt-get install rabbitmq-server
+rabbitmqctl add_user admin admin
+rabbitmqctl set_user_tags admin administrator
+rabbitmq-plugins enable rabbitmq_management
+service rabbitmq-server restart
+

@@ -1,0 +1,3 @@
+com/xxcompany/xxproject/zuul/server/Application.class
+com/xxcompany/xxproject/zuul/server/ExceptionFilter.class
+com/xxcompany/xxproject/zuul/server/AccessFilter.class
