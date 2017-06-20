@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.xxcompany.xxproject</groupId>
@@ -10,18 +11,18 @@
 	<!-- Changing the Java version -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<!-- <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format> -->
 	</properties>
-	
+
 	<!-- http://projects.spring.io/spring-cloud/ -->
 	<!-- Inherit defaults from Spring Boot -->
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.2.RELEASE</version>
-    </parent>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.2.RELEASE</version>
+	</parent>
 
 	<!-- Inherit defaults from Spring Cloud -->
 	<dependencyManagement>
@@ -36,68 +37,57 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<!-- Common Dependencies -->
 	<dependencies>
-        <dependency>
-	        <groupId>org.springframework.boot</groupId>
-	        <artifactId>spring-boot-starter-web</artifactId>
-	    </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
-        <!-- eureka & config are common dependencies -->
-        <!-- <dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-        <dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency> -->
-		
-        <!-- DevTools monitors classpath resources, the only way to trigger a restart
-            is to update the classpath -->
-        <!-- If your application is launched using java -jar or if it’s started
-            using a special classloader, then it is considered a “production application” -->
-        <!-- <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-        </dependency> -->
-        
-        <!-- Retry -->
-        <dependency>
-			<groupId>org.springframework.retry</groupId> 
-			<artifactId>spring-retry</artifactId> 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- eureka & config are common dependencies -->
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-eureka</artifactId> 
+			</dependency> <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-config</artifactId> 
+			</dependency> -->
+
+		<!-- DevTools monitors classpath resources, the only way to trigger a restart 
+			is to update the classpath -->
+		<!-- If your application is launched using java -jar or if it’s started 
+			using a special classloader, then it is considered a “production application” -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-devtools</artifactId> 
+			</dependency> -->
+
+		<!-- Retry -->
+		<dependency>
+			<groupId>org.springframework.retry</groupId>
+			<artifactId>spring-retry</artifactId>
+		</dependency>
+
 		<!-- AMQP COMMON -->
-		<!-- <dependency>
-		    <groupId>org.springframework.cloud</groupId>
-		    <artifactId>spring-cloud-starter-bus-amqp</artifactId>
-		</dependency> -->
-		
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-bus-amqp</artifactId> 
+			</dependency> -->
+
 		<!-- Common Zipkin -->
-		<!-- <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zipkin</artifactId>
-        </dependency> -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-sleuth-zipkin-stream</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
-        </dependency>
-    </dependencies>
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-zipkin</artifactId> 
+			</dependency> -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-sleuth-zipkin-stream</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+		</dependency>
+	</dependencies>
 
 	<modules>
 		<module>eureka-server</module>
@@ -105,9 +95,9 @@
 		<module>service-test02</module>
 		<module>config-server</module>
 		<module>zuul-server</module>
-    <module>zipkin-server</module>
-  </modules>
-	
+		<module>zipkin-server</module>
+	</modules>
+
 	<build>
 		<resources>
 			<resource>
@@ -120,26 +110,19 @@
 				<!-- <filtering>true</filtering> -->
 			</resource>
 		</resources>
-		
-		<!-- <plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<configuration>
-					<nonFilteredFileExtensions>
-						<nonFilteredFileExtension>jks</nonFilteredFileExtension>
-					</nonFilteredFileExtensions>
-				</configuration>
-			</plugin>
-		</plugins> -->
-		
+
+		<!-- <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-resources-plugin</artifactId> 
+			<configuration> <nonFilteredFileExtensions> <nonFilteredFileExtension>jks</nonFilteredFileExtension> 
+			</nonFilteredFileExtensions> </configuration> </plugin> </plugins> -->
+
 		<!-- Package as an executable JAR/WAR -->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<dependencies>
-					<!-- Hot Deployment, reload class definitions with changes in the method signatures -->
+					<!-- Hot Deployment, reload class definitions with changes in the method 
+						signatures -->
 					<dependency>
 						<groupId>org.springframework</groupId>
 						<artifactId>springloaded</artifactId>
@@ -152,5 +135,5 @@
 		<!-- <finalName>${project.artifactId}-${project.version}-${maven.build.timestamp}</finalName> -->
 		<finalName>${project.artifactId}-${project.version}</finalName>
 	</build>
-	
+
 </project>
