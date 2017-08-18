@@ -84,7 +84,7 @@ public class Application {
 		}
 	}
 	
-	@Inject
+	/*@Inject
 	TraceFilter traceFilter;
 
 	@Bean
@@ -94,5 +94,5 @@ public class Application {
 	    filterRegistrationBean.setDispatcherTypes(DispatcherType.ASYNC, new DispatcherType[]{DispatcherType.ERROR, DispatcherType.FORWARD, DispatcherType.INCLUDE, DispatcherType.REQUEST});
 	    filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 	    return filterRegistrationBean;
-	}
+	}*/
 }
