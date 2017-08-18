@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>com.xcompany.xproject</groupId>
+		<artifactId>xproject</artifactId>
+		<version>1.0.0-RELEASE</version>
+	</parent>
+	
+	<artifactId>support</artifactId>
+	<packaging>pom</packaging>
+	
+  <modules>
+    <module>config-server</module>
+    <module>eureka-server</module>
+    <module>zuul-server</module>
+    <module>hystrix-dashboard</module>
+    <module>turbine-server</module>
+    <module>auth-server</module>
+    <module>zipkin-server</module>
+  </modules>
+  
+</project>

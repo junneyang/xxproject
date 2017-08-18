@@ -1,0 +1,331 @@
+version: "2.2"
+
+services:
+  rabbit-server:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - ${RABBITMQ_MGNT_PORT}:${RABBITMQ_MGNT_PORT}
+    networks:
+      - xproject
+    volumes:
+      - "data-rabbit:/var/lib/rabbitmq"
+    env_file:
+      - bootstrap.env
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+    healthcheck:
+      test: nc -v -w 5 -z localhost ${RABBITMQ_PORT}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+
+  zipkin-mysql:
+    image: mysql:5.6
+    ports:
+      - ${ZIPKIN_MYSQL_PORT}:${ZIPKIN_MYSQL_PORT}
+    networks:
+      - xproject
+    volumes:
+      - "data-zipkin-mysql:/var/lib/mysql"
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=docker
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${ZIPKIN_MYSQL_USER}
+      - MYSQL_PASSWORD=${ZIPKIN_MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${ZIPLIN_MYSQL_DB}
+    healthcheck:
+      test: mysqladmin ping -u${ZIPKIN_MYSQL_USER} -p${ZIPKIN_MYSQL_PASSWORD}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+
+  config-server:
+    image: xproject/support/config-server:${PRODUCT_VERSION}-RELEASE
+    ports:
+      - ${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=default,native,docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost ${CONFIG_SERVER_PORT}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+      
+  eureka01:
+    image: xproject/support/eureka-server:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      config-server:
+        condition: service_healthy
+    ports:
+      - ${SERVER_PORT_EUREKA01}:${SERVER_PORT_EUREKA01}
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=eureka01,eureka01-docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost ${SERVER_PORT_EUREKA01}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+      
+
+  eureka02:
+    image: xproject/support/eureka-server:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      config-server:
+        condition: service_healthy
+    ports:
+      - ${SERVER_PORT_EUREKA02}:${SERVER_PORT_EUREKA02}
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=eureka02,eureka02-docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost ${SERVER_PORT_EUREKA02}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+      
+  zipkin-server:
+    image: xproject/support/zipkin-server:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      eureka01:
+        condition: service_healthy
+      eureka02:
+        condition: service_healthy
+      rabbit-server:
+        condition: service_healthy
+      zipkin-mysql:
+        condition: service_healthy
+    ports:
+      - ${ZIPKIN_SERVER_PORT}:${ZIPKIN_SERVER_PORT}
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost ${ZIPKIN_SERVER_PORT}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+
+  auth-server:
+    image: xproject/support/auth-server:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      zipkin-server:
+        condition: service_healthy
+    ports:
+      - ${AUTH_SERVER_PORT}:${AUTH_SERVER_PORT}
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost ${AUTH_SERVER_PORT}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+
+
+  zuul-server:
+    image: xproject/support/zuul-server:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      zipkin-server:
+        condition: service_healthy
+      auth-server:
+        condition: service_healthy
+    ports:
+      - ${ZUUL_SERVER_PORT}:${ZUUL_SERVER_PORT}
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost ${ZUUL_SERVER_PORT}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+      
+
+  turbine-server:
+    image: xproject/support/turbine-server:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      zipkin-server:
+        condition: service_healthy
+    ports:
+      - ${TURBINE_SERVER_PORT}:${TURBINE_SERVER_PORT}
+      - ${TURBINE_SERVER_MANAGEMENT_PORT}:${TURBINE_SERVER_MANAGEMENT_PORT}
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost ${TURBINE_SERVER_PORT}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+      
+
+  hystrix-dashboard:
+    image: xproject/support/hystrix-dashboard:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      turbine-server:
+        condition: service_healthy
+    ports:
+      - ${HYSTRIX_DASHBOARD_SERVER_PORT}:${HYSTRIX_DASHBOARD_SERVER_PORT}
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost ${HYSTRIX_DASHBOARD_SERVER_PORT}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+      
+
+  product-service:
+    image: xproject/core/product-service:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      zipkin-server:
+        condition: service_healthy
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost 8080
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+
+  review-service:
+    image: xproject/core/review-service:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      zipkin-server:
+        condition: service_healthy
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost 8080
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+
+  product-composite-service:
+    image: xproject/composite/product-composite-service:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      zipkin-server:
+        condition: service_healthy
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost 8080
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+
+  product-api-service:
+    image: xproject/api/product-api-service:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      auth-server:
+        condition: service_healthy
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=docker
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: nc -v -w 5 -z localhost 8080
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 3
+
+networks:
+  xproject:
+volumes:
+  data-rabbit:
+  data-zipkin-mysql:
+
+#######################Useful Reference#########################
+#https://docs.docker.com/compose/compose-file/compose-file-v2/
+#volumes:
+#  db-data:
+#extra_hosts:
+#  - "somehost:162.242.195.82"
+#  - "otherhost:50.31.209.229"
+#logging:
+#  driver: syslog
+#  options:
+#    syslog-address: "tcp://192.168.0.42:123"
+#ulimits:
+#  nproc: 65535
+#  nofile:
+#    soft: 20000
+#    hard: 40000
+#volumes:
+#      - "/var/run/docker.sock:/var/run/docker.sock"
+#      - db-data:/var/lib/postgresql/data
+#test: ["CMD", "nc", "-v", "-w", "5", "-z", "localhost", "${CONFIG_SERVER_PORT}"]
+#test: ["CMD-SHELL", "nc -v -w 5 -z localhost ${CONFIG_SERVER_PORT}"]
+#restart: on-failure/none/always
+############################################################
+
+
+

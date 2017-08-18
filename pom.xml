@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.xcompany.xproject</groupId>
+	<artifactId>xproject</artifactId>
+	<version>1.0.0-RELEASE</version>
+	<packaging>pom</packaging>
+
+	<!-- Changing the Java version -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<!-- <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format> -->
+		
+		<!-- docker.image.prefix -->
+		<docker.image.prefix>${project.parent.parent.artifactId}/${project.parent.artifactId}</docker.image.prefix>
+		<docker.maintainer>https://github.com/junneyang</docker.maintainer>
+		<jmxremote.port>8888</jmxremote.port>
+	</properties>
+	
+	<!-- <profiles>  
+        <profile>  
+            <id>docker</id>  
+            <properties>
+            	<profileActive>docker</profileActive>
+            </properties>
+            <activation>  
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>  
+    </profiles>   -->
+
+	<!-- http://projects.spring.io/spring-cloud/ -->
+	<!-- Inherit defaults from Spring Boot -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.2.RELEASE</version>
+	</parent>
+
+	<!-- Inherit defaults from Spring Cloud -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<!-- <version>Dalston.RELEASE</version> -->
+				<version>Dalston.SR1</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- Common Dependencies -->
+	<dependencies>
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency> -->
+
+		<!-- eureka & config are common dependencies -->
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-eureka</artifactId> 
+			</dependency> <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-config</artifactId> 
+			</dependency> -->
+
+		<!-- DevTools monitors classpath resources, the only way to trigger a restart 
+			is to update the classpath -->
+		<!-- If your application is launched using java -jar or if it’s started 
+			using a special classloader, then it is considered a “production application” -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-devtools</artifactId> 
+			</dependency> -->
+
+		<!-- Retry -->
+		<!-- <dependency>
+			<groupId>org.springframework.retry</groupId>
+			<artifactId>spring-retry</artifactId>
+		</dependency> -->
+
+		<!-- AMQP COMMON -->
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-bus-amqp</artifactId> 
+			</dependency> -->
+
+		<!-- Common Zipkin -->
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-zipkin</artifactId> 
+			</dependency> -->
+		<!-- <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-sleuth-zipkin-stream</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+		</dependency> -->
+
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-undertow</artifactId>
+		</dependency> -->
+
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>${project.parent.relativePath}/../../config</directory>
+				<!-- <directory>${project.parent.parent.basedir}/config</directory> -->
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.txt</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<!-- <include>**/*.xml</include>
+				<filtering>true</filtering> -->
+			</resource>
+		</resources>
+
+		<!-- <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-resources-plugin</artifactId> 
+			<configuration> <nonFilteredFileExtensions> <nonFilteredFileExtension>jks</nonFilteredFileExtension> 
+			</nonFilteredFileExtensions> </configuration> </plugin> </plugins> -->
+
+		<!-- Package as an executable JAR/WAR -->
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<dependencies>
+					<!-- Hot Deployment, reload class definitions with changes in the method signatures -->
+					<dependency>
+						<groupId>org.springframework</groupId>
+						<artifactId>springloaded</artifactId>
+						<version>1.2.6.RELEASE</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			
+			<!-- https://github.com/spotify/docker-maven-plugin/blob/0d8aa7531da3ba29c4aeee4897411ec7ea34c711/src/main/java/com/spotify/docker/BuildMojo.java#L112-L117 -->
+			<!-- https://github.com/spotify/docker-maven-plugin -->
+			<plugin>
+	            <groupId>com.spotify</groupId>
+	            <artifactId>docker-maven-plugin</artifactId>
+	            <version>0.4.13</version>
+	            <configuration>
+	            	<skipDockerBuild>true</skipDockerBuild>
+	            	<forceTags>true</forceTags>
+	                <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+					<imageTags>
+						<imageTag>${project.version}</imageTag>
+						<imageTag>latest</imageTag>
+					</imageTags>
+	                <!-- <dockerDirectory>src/main/docker</dockerDirectory>
+	                <resources>
+	                    <resource>
+	                        <targetPath>/</targetPath>
+	                        <directory>${project.build.directory}</directory>
+	                        <include>${project.build.finalName}.jar</include>
+	                    </resource>
+	                </resources> -->
+	                <!-- <baseImage>anapsix/alpine-java:8_server-jre</baseImage> -->
+	                <baseImage>anapsix/alpine-java:8_jdk</baseImage>
+	                <!-- <baseImage>openjdk:8u111-jre-alpine</baseImage> -->
+	                <maintainer>${docker.maintainer}</maintainer>
+				    <resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<!-- <include>**/*</include> -->
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+					<!-- <entryPoint>["sh", "start.sh"]</entryPoint> -->
+	                <!-- <volumes>/tmp/logs</volumes> -->
+	                <!-- <entryPoint>["java", "-jar", "/${project.build.finalName}.jar", "-|-spring.profiles.active=default,native,docker"]</entryPoint> -->
+	                <!-- <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint> -->
+	                <exposes>
+	                	<expose>8888</expose>
+	                </exposes>
+	                <cmd>["java", "-jar", "-Dcom.sun.management.jmxremote.local.only=false", "-Dcom.sun.management.jmxremote=true", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Dcom.sun.management.jmxremote.port=${jmxremote.port}", "/${project.build.finalName}.jar"]</cmd>
+	            </configuration>
+	        </plugin>
+		</plugins>
+
+		<!-- <finalName>${project.artifactId}-${project.version}-${maven.build.timestamp}</finalName> -->
+		<finalName>${project.artifactId}-${project.version}</finalName>
+	</build>
+	
+	<modules>
+		<module>support</module>
+		<module>core</module>
+		<module>composite</module>
+		<module>api</module>
+	</modules>
+</project>
+

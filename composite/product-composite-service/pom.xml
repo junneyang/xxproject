@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>com.xcompany.xproject</groupId>
+		<artifactId>composite</artifactId>
+		<version>1.0.0-RELEASE</version>
+	</parent>
+	
+	<artifactId>product-composite-service</artifactId>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+        <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		<dependency>
+	        <groupId>org.springframework.cloud</groupId>
+	        <artifactId>spring-cloud-starter-ribbon</artifactId>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-hystrix</artifactId>
+		</dependency>
+		<!-- hystrix-amqp-turbine-dashboard -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-netflix-hystrix-amqp</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Common Zipkin -->
+		<dependency> 
+	       <groupId>org.springframework.cloud</groupId>
+	       <artifactId>spring-cloud-sleuth-stream</artifactId>
+	   </dependency>
+	   <dependency> 
+	       <groupId>org.springframework.cloud</groupId>
+	       <artifactId>spring-cloud-starter-sleuth</artifactId>
+	   </dependency>
+	   <!-- EXAMPLE FOR RABBIT BINDING -->
+	   <dependency> 
+	       <groupId>org.springframework.cloud</groupId>
+	       <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+	   </dependency>
+	   
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.spotify</groupId>
+	            <artifactId>docker-maven-plugin</artifactId>
+	            <configuration>
+	            	<skipDockerBuild>false</skipDockerBuild>
+	            	<exposes>
+	                	<expose>8080</expose>
+	                </exposes>
+	            </configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>

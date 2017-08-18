@@ -1,0 +1,30 @@
+FROM anapsix/alpine-java:8_jdk
+MAINTAINER https://github.com/junneyang
+ADD /opt/java/workspace/xproject/config/1.0.0/auth-server-docker.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/auth-server.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/eureka-server-eureka01-docker.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/eureka-server-eureka01.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/eureka-server-eureka02-docker.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/eureka-server-eureka02.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/hystrix-dashboard-docker.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/hystrix-dashboard.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/product-api-service-docker.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/product-api-service.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/product-composite-service-docker.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/product-composite-service.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/product-service-docker.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/product-service.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/review-service-docker.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/review-service.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/turbine-server-docker.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/turbine-server.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/zipkin-server-docker.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/zipkin-server.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/zuul-server-docker.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/1.0.0/zuul-server.properties /opt/java/workspace/xproject/config/1.0.0/
+ADD /opt/java/workspace/xproject/config/banner.txt /opt/java/workspace/xproject/config/
+ADD /opt/java/workspace/xproject/config/logback-base.xml /opt/java/workspace/xproject/config/
+ADD /config-server-1.0.0-RELEASE.jar //
+EXPOSE 7001
+CMD ["java", "-jar", "-Dcom.sun.management.jmxremote.local.only=false", "-Dcom.sun.management.jmxremote=true", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Dcom.sun.management.jmxremote.port=8888", "/config-server-1.0.0-RELEASE.jar"]
+VOLUME /opt/java/workspace/xproject/config

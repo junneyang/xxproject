@@ -1,0 +1,136 @@
+version: "3"
+
+services:
+  config-server:
+    #build: ./dockerfile_dir
+    image: xproject/support/config-server:${PRODUCT_VERSION}-RELEASE
+    deploy:
+      replicas: 1
+    # https://docs.docker.com/engine/admin/resource_constraints/
+    #  resources:
+    #    limits:
+    #      cpus: "0.1"
+    #      memory: 50M
+    #  restart_policy:
+    #    condition: on-failure
+    #    delay: 5s
+    #    max_attempts: 3
+    #    window: 120s
+    #  update_config:
+    #    parallelism: 2
+    #    delay: 10s
+    #  configs:
+    #    - source: my_config
+    #      target: /redis_config
+    #      uid: '103'
+    #      gid: '103'
+    #      mode: 0440
+    #depends_on:
+    #  - db
+    #  - redis
+    #extra_hosts:
+    #  - "somehost:162.242.195.82"
+    #  - "otherhost:50.31.209.229"
+    #healthcheck:
+    #  test: ["CMD", "curl", "-f", "http://localhost"]
+    #  interval: 1m30s
+    #  timeout: 10s
+    #  retries: 3
+    #logging:
+    #  driver: syslog
+    #  options:
+    #    syslog-address: "tcp://192.168.0.42:123"
+    #ulimits:
+    #  nproc: 65535
+    #  nofile:
+    #    soft: 20000
+    #    hard: 40000
+    ports:
+      - "7001:7001"
+    networks:
+      - xproject
+    #volumes:
+    #  - $PWD/../blog-microservices-config:/config-repo
+    env_file:
+      - bootstrap.env
+    #environment:
+    #  - SPRING_PROFILES_ACTIVE=docker,native
+    #  - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS=file:/config-repo
+    #  - SECURITY_USER_NAME=${MY_CONFIG_USER}
+    #  - SECURITY_USER_PASSWORD=${MY_CONFIG_PWD}
+    #  - JAVA_TOOL_OPTIONS=${MY_JAVA_TOOL_OPTIONS}
+    #  - MY_CONFIG_ENCRYPT_KEY=${MY_CONFIG_ENCRYPT_KEY}
+
+  eureka01:
+    #build: ./dockerfile_dir
+    image: xproject/support/eureka-server:${PRODUCT_VERSION}-RELEASE
+    deploy:
+      replicas: 1
+    #  resources:
+    #    limits:
+    #      cpus: "0.1"
+    #      memory: 50M
+    #  restart_policy:
+    #    condition: on-failure
+    depends_on:
+      - config-server
+    ports:
+      - "8001:8001"
+    networks:
+      - xproject
+    #volumes:
+    #  - $PWD/../blog-microservices-config:/config-repo
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=eureka01,eureka01-docker
+
+  eureka02:
+    #build: ./dockerfile_dir
+    image: xproject/support/eureka-server:${PRODUCT_VERSION}-RELEASE
+    deploy:
+      replicas: 1
+    #  resources:
+    #    limits:
+    #      cpus: "0.1"
+    #      memory: 50M
+    #  restart_policy:
+    #    condition: on-failure
+    depends_on:
+      - config-server
+    ports:
+      - "8002:8002"
+    networks:
+      - xproject
+    #volumes:
+    #  - $PWD/../blog-microservices-config:/config-repo
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=eureka02,eureka02-docker
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    #  - db-data:/var/lib/postgresql/data
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - xproject
+networks:
+  xproject:
+#volumes:
+#  db-data:
+#configs:
+#  my_config:
+#    file: ./my_config.txt
+#  my_other_config:
+#    external: true
+
+

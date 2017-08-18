@@ -1,0 +1,65 @@
+#################### Delpoy as Host App
+
+cd /opt/java/workspace/xproject 
+mvn clean
+mvn package
+ps -ef | grep java | grep 1.0.0-RELEASE.jar | awk -F' '  '{ print $2 }' | xargs kill -9
+
+
+# support-service: config-server
+source bootstrap.rc && java -jar support/config-server/target/config-server-1.0.0-RELEASE.jar
+# http://localhost:7001/service-test01/default/1.0.0
+# support-service: auth-server
+source bootstrap.rc && java -jar support/auth-server/target/auth-server-1.0.0-RELEASE.jar
+# http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536
+# curl acme:acmesecret@localhost:9999/uaa/oauth/token \
+	-d grant_type=authorization_code \
+	-d client_id=acme \
+	-d redirect_uri=http://example.com \
+	-d code=$CODE -s | jq .
+# curl 'http://localhost:9999/uaa/user' -H  "Authorization: Bearer $TOKEN" -s | jq .
+# support-service: eureka01
+source bootstrap.rc && SPRING_CLOUD_CONFIG_PROFILE=${EUREKA_SERVER01} java -jar support/eureka-server/target/eureka-server-1.0.0-RELEASE.jar
+# support-service: eureka02 
+source bootstrap.rc && SPRING_CLOUD_CONFIG_PROFILE=${EUREKA_SERVER02} java -jar support/eureka-server/target/eureka-server-1.0.0-RELEASE.jar
+# support-service: zuul 
+source bootstrap.rc && java -jar support/zuul-server/target/zuul-server-1.0.0-RELEASE.jar
+
+
+# support-service: turbine-server(optional, need to delete composite-service spring-cloud-netflix-hystrix-amqp && amqp config)
+source bootstrap.rc && java -jar support/turbine-server/target/turbine-server-1.0.0-RELEASE.jar
+# support-service: hystrix-dashboard(optional)
+source bootstrap.rc && java -jar support/hystrix-dashboard/target/hystrix-dashboard-1.0.0-RELEASE.jar
+# http://localhost:8088/hystrix
+# http://turbine-server:8989/turbine.stream
+
+
+# core-service: product-service
+source bootstrap.rc && java -jar core/product-service/target/product-service-1.0.0-RELEASE.jar
+# core-service: review-service
+source bootstrap.rc && java -jar core/review-service/target/review-service-1.0.0-RELEASE.jar
+
+# composite-service: product-composite-service
+source bootstrap.rc && java -jar composite/product-composite-service/target/product-composite-service-1.0.0-RELEASE.jar
+# http://localhost:5555/api/product-composite-service/product-test
+# http://localhost:5555/api/product-composite-service/product-composite
+
+# api-service: product-api-service
+source bootstrap.rc && java -jar api/product-api-service/target/product-api-service-1.0.0-RELEASE.jar
+# http://localhost:5555/api/product-api-service/product-api-test
+# http://localhost:5555/api/product-api-service/product-api-composite
+
+# test-api
+# curl 'http://localhost:5555/api/product-api-service/product-api-composite' -H  "Authorization: Bearer $TOKEN" -s | jq .
+# curl 'http://localhost:5555/api/product-api-service/product-api-test' -H  "Authorization: Bearer $TOKEN" -s | jq .
+
+#################### Delpoy as Docker App
+mvn clean
+mvn package docker:build
+docker images | grep none | awk '{print $3 }' | xargs docker rmi
+source bootstrap.rc
+docker-compose rm -sf
+docker-compose up -d
+docker-compose ps
+docker-compose up --scale product-service=2
+
