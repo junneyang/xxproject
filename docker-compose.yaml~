@@ -3,6 +3,7 @@ version: "2.2"
 services:
   rabbit-server:
     image: rabbitmq:3-management-alpine
+    hostname: ${RABBITMQ_SERVER}
     ports:
       - ${RABBITMQ_MGNT_PORT}:${RABBITMQ_MGNT_PORT}
     networks:
@@ -49,6 +50,8 @@ services:
       - ${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -69,6 +72,8 @@ services:
       - ${SERVER_PORT_EUREKA01}:${SERVER_PORT_EUREKA01}
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -91,6 +96,8 @@ services:
       - ${SERVER_PORT_EUREKA02}:${SERVER_PORT_EUREKA02}
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -118,6 +125,8 @@ services:
       - ${ZIPKIN_SERVER_PORT}:${ZIPKIN_SERVER_PORT}
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -139,6 +148,8 @@ services:
       - ${AUTH_SERVER_PORT}:${AUTH_SERVER_PORT}
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -163,6 +174,8 @@ services:
       - ${ZUUL_SERVER_PORT}:${ZUUL_SERVER_PORT}
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -186,6 +199,8 @@ services:
       - ${TURBINE_SERVER_MANAGEMENT_PORT}:${TURBINE_SERVER_MANAGEMENT_PORT}
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -208,6 +223,8 @@ services:
       - ${HYSTRIX_DASHBOARD_SERVER_PORT}:${HYSTRIX_DASHBOARD_SERVER_PORT}
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -228,6 +245,8 @@ services:
         condition: service_healthy
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -247,6 +266,8 @@ services:
         condition: service_healthy
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -266,6 +287,8 @@ services:
         condition: service_healthy
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -285,6 +308,8 @@ services:
         condition: service_healthy
     networks:
       - xproject
+    volumes:
+      - "data-logs:/tmp/logs/"
     env_file:
       - bootstrap.env
     environment:
@@ -302,6 +327,7 @@ networks:
 volumes:
   data-rabbit:
   data-zipkin-mysql:
+  data-logs:
 
 #######################Useful Reference#########################
 #https://docs.docker.com/compose/compose-file/compose-file-v2/
