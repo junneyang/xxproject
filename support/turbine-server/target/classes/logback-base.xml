@@ -75,21 +75,60 @@
 			</pattern>
 		</layout>
 	</appender>
+	
+	<appender name="LOGSTASH_TCP" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<if condition='property("SPRING_PROFILES_ACTIVE").contains("docker")'>
+			<then>
+				<destination>${LOGSTASH_SERVER}:${LOGSTASH_TCP_SERVER_PORT}</destination>
+			</then>
+			<else>
+				<destination>${LOGSTASH_SERVER_HOST}:${LOGSTASH_TCP_SERVER_PORT}</destination>
+			</else>
+		</if>
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+		  <providers>
+		    <!-- <mdc/> -->
+		    <pattern>
+		      <pattern>
+		        {
+		        	"appName": "${springAppName:-}",
+		        	"traceId": "%X{X-B3-TraceId:-0000000000000000}",
+		        	"spanId": "%X{X-B3-SpanId:-0000000000000000}",
+		        	"export": "%X{X-Span-Export:-false}",
+		        	"timeStamp": "%d{yyyy-MM-dd-HH:mm:ss.SSS}",
+		        	"level": "%p",
+		        	"pid": "${PID:-}",
+		        	"thread": "%t",
+		        	"logger": "%logger",
+		        	"line": "%line",
+		        	"message": "%m%n%wex"
+		        }
+		      </pattern>
+		    </pattern>
+		  </providers>
+		</encoder>
+	</appender>
 
 	<logger name="springframework.web" level="INFO" />
-	<logger name="org.springframework.security" level="TRACE" />
-	<logger name="org.springframework.session" level="TRACE" />
-	<logger name="org.hibernate.SQL" level="DEBUG" />
-	<!-- <logger name="org.hibernate.type.descriptor.sql.BasicBinder"  level="TRACE" />  
-    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor"  level="DEBUG" />  
+	<logger name="org.springframework.security" level="INFO" />
+	<logger name="org.springframework.session" level="INFO" />
+	<logger name="org.hibernate.SQL" level="TRACE" />
+	<logger name="org.hibernate.type.descriptor.sql.BasicBinder"  level="TRACE" />  
+    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor"  level="TRACE" />  
     <logger name="org.hibernate.type" level="TRACE" />
-    <logger name="org.hibernate.engine.QueryParameters" level="DEBUG" />  
-    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG" /> -->
+    <logger name="org.hibernate.engine.QueryParameters" level="TRACE" />  
+    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="TRACE" />
+    <logger name="org.springframework.cloud.sleuth" level="INFO" />
 
 	<root level="INFO" additivity="false">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="ROLLING_FILE_ALL" />
 		<appender-ref ref="ROLLING_FILE_INFO" />
 		<appender-ref ref="ROLLING_FILE_ERROR" />
+		<appender-ref ref="LOGSTASH_TCP" />
 	</root>
 </included>
+

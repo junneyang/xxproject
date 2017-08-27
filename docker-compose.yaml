@@ -1,6 +1,67 @@
 version: "2.2"
 
 services:
+  # ELK
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.2.2
+    ports:
+      - ${ES_SERVER_PORT}:${ES_SERVER_PORT}
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=${ES_JAVA_OPTS}
+    healthcheck:
+      test: curl -f http://localhost:${ES_SERVER_PORT}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 10
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.2.2
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    ports:
+      - ${KIBANA_SERVER_PORT}:${KIBANA_SERVER_PORT}
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    environment:
+      - xpack.security.enabled=false
+    healthcheck:
+      test: curl -f http://localhost:${KIBANA_SERVER_PORT}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 10
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:5.2.2
+    depends_on:
+      kibana:
+        condition: service_healthy
+    command: logstash -f /elk-config/logstash.config
+    ports:
+      - ${LOGSTASH_SERVER_PORT}:${LOGSTASH_SERVER_PORT}
+      - ${LOGSTASH_UDP_SERVER_PORT}:${LOGSTASH_UDP_SERVER_PORT}
+    networks:
+      - xproject
+    volumes:
+      - $PWD/config/elk-config:/elk-config
+    env_file:
+      - bootstrap.env
+    environment:
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+    healthcheck:
+      test: curl -f http://localhost:${LOGSTASH_SERVER_PORT}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 10
+
+  # Rabbit-Zipkin
   rabbit-server:
     image: rabbitmq:3-management-alpine
     hostname: ${RABBITMQ_SERVER}
@@ -19,7 +80,7 @@ services:
       test: nc -v -w 5 -z localhost ${RABBITMQ_PORT}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
 
   zipkin-mysql:
     image: mysql:5.6
@@ -42,10 +103,13 @@ services:
       test: mysqladmin ping -u${ZIPKIN_MYSQL_USER} -p${ZIPKIN_MYSQL_PASSWORD}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
 
   config-server:
     image: xproject/support/config-server:${PRODUCT_VERSION}-RELEASE
+    depends_on:
+      logstash:
+        condition: service_healthy
     ports:
       - ${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}
     networks:
@@ -61,7 +125,7 @@ services:
       test: nc -v -w 5 -z localhost ${CONFIG_SERVER_PORT}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
       
   eureka01:
     image: xproject/support/eureka-server:${PRODUCT_VERSION}-RELEASE
@@ -84,7 +148,7 @@ services:
       test: nc -v -w 5 -z localhost ${SERVER_PORT_EUREKA01}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
       
 
   eureka02:
@@ -108,7 +172,7 @@ services:
       test: nc -v -w 5 -z localhost ${SERVER_PORT_EUREKA02}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
       
   zipkin-server:
     image: xproject/support/zipkin-server:${PRODUCT_VERSION}-RELEASE
@@ -137,7 +201,7 @@ services:
       test: nc -v -w 5 -z localhost ${ZIPKIN_SERVER_PORT}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
 
   auth-server:
     image: xproject/support/auth-server:${PRODUCT_VERSION}-RELEASE
@@ -160,7 +224,7 @@ services:
       test: nc -v -w 5 -z localhost ${AUTH_SERVER_PORT}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
 
 
   zuul-server:
@@ -186,7 +250,7 @@ services:
       test: nc -v -w 5 -z localhost ${ZUUL_SERVER_PORT}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
       
 
   turbine-server:
@@ -211,7 +275,7 @@ services:
       test: nc -v -w 5 -z localhost ${TURBINE_SERVER_PORT}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
       
 
   hystrix-dashboard:
@@ -235,7 +299,7 @@ services:
       test: nc -v -w 5 -z localhost ${HYSTRIX_DASHBOARD_SERVER_PORT}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
       
 
   product-service:
@@ -257,7 +321,7 @@ services:
       test: nc -v -w 5 -z localhost 8080
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
 
   review-service:
     image: xproject/core/review-service:${PRODUCT_VERSION}-RELEASE
@@ -278,7 +342,7 @@ services:
       test: nc -v -w 5 -z localhost 8080
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
 
   product-composite-service:
     image: xproject/composite/product-composite-service:${PRODUCT_VERSION}-RELEASE
@@ -299,7 +363,7 @@ services:
       test: nc -v -w 5 -z localhost 8080
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
 
   product-api-service:
     image: xproject/api/product-api-service:${PRODUCT_VERSION}-RELEASE
@@ -320,7 +384,7 @@ services:
       test: nc -v -w 5 -z localhost 8080
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
-      retries: 3
+      retries: 10
 
 networks:
   xproject:

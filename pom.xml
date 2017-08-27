@@ -18,6 +18,9 @@
 		<docker.image.prefix>${project.parent.parent.artifactId}/${project.parent.artifactId}</docker.image.prefix>
 		<docker.maintainer>https://github.com/junneyang</docker.maintainer>
 		<jmxremote.port>8888</jmxremote.port>
+		
+		<!-- override springboot logback.version -->
+		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
 	</properties>
 	
 	<!-- <profiles>  
@@ -119,6 +122,23 @@
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-starter-undertow</artifactId>
 		</dependency> -->
+
+		<!-- <dependency>
+			<groupId>com.cwbase</groupId>
+			<artifactId>logback-redis-appender</artifactId>
+			<version>1.1.5</version>
+		</dependency> -->
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>4.11</version>
+		</dependency>
+		<!-- The org.codehaus.janino:commons-compiler:3.0.6 dependency -->
+		<!-- will be automatically pulled in by Maven's transitivity rules -->
+		<dependency>
+			<groupId>org.codehaus.janino</groupId>
+			<artifactId>janino</artifactId>
+		</dependency>
 
 	</dependencies>
 

@@ -1,16 +1,21 @@
 package com.xcompany.xproject.product.api.service;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoRestTemplateCustomizer;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.sleuth.instrument.web.client.TraceRestTemplateInterceptor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.client.RestTemplate;
 
@@ -53,4 +58,15 @@ public class Application {
 	RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
+	
+	@Bean
+    public UserInfoRestTemplateCustomizer userInfoRestTemplateCustomizer(
+            TraceRestTemplateInterceptor traceRestTemplateInterceptor) {
+        return restTemplate -> {
+            List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>(
+                    restTemplate.getInterceptors());
+            interceptors.add(traceRestTemplateInterceptor);
+            restTemplate.setInterceptors(interceptors);
+        };
+    }
 }

@@ -23,6 +23,7 @@ ADD /opt/java/workspace/xproject/config/1.0.0/zipkin-server.properties /opt/java
 ADD /opt/java/workspace/xproject/config/1.0.0/zuul-server-docker.properties /opt/java/workspace/xproject/config/1.0.0/
 ADD /opt/java/workspace/xproject/config/1.0.0/zuul-server.properties /opt/java/workspace/xproject/config/1.0.0/
 ADD /opt/java/workspace/xproject/config/banner.txt /opt/java/workspace/xproject/config/
+ADD /opt/java/workspace/xproject/config/elk-config/logstash.config /opt/java/workspace/xproject/config/elk-config/
 ADD /opt/java/workspace/xproject/config/logback-base.xml /opt/java/workspace/xproject/config/
 ADD /config-server-1.0.0-RELEASE.jar //
 EXPOSE 7001

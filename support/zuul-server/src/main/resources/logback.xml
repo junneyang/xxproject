@@ -4,20 +4,20 @@
 	<include resource="logback-base.xml" />
 	
 	<!-- Override The Base Settings -->
-	<logger name="springframework.web" level="TRACE" />
+	<!-- <logger name="springframework.web" level="TRACE" />
 	<logger name="org.hibernate.SQL" level="TRACE" />
 	<logger name="org.hibernate.type.descriptor.sql.BasicBinder"  level="TRACE" />  
     <logger name="org.hibernate.type.descriptor.sql.BasicExtractor"  level="TRACE" />  
     <logger name="org.hibernate.type" level="TRACE" />
     <logger name="org.hibernate.engine.QueryParameters" level="TRACE" />  
-    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="TRACE" />
+    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="TRACE" /> -->
     
     <logger name="org.springframework.cloud.sleuth" level="DEBUG" />
 
-	<root level="INFO" additivity="false">
+	<!-- <root level="INFO" additivity="false">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="ROLLING_FILE_ALL" />
 		<appender-ref ref="ROLLING_FILE_INFO" />
 		<appender-ref ref="ROLLING_FILE_ERROR" />
-	</root>
+	</root> -->
 </configuration>
