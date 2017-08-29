@@ -75,14 +75,16 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   ![image](screenshots/token.png) 
 - 访问API服务: http://localhost:5555/api/product-api-service/product-api-composite, 返回消息头带X-RequestId, 如下: 
   ![image](screenshots/api.png) 
-- 访问追踪系统: http://localhost:7777/zipkin/, 如下: 
-  ![image](screenshots/trace.png) 
-  ![image](screenshots/dependency.png) 
+- 访问追踪系统: http://localhost:7777/zipkin/, 调用链分析如下:   
+  ![image](screenshots/trace.png) 
+  服务依赖拓扑图如下:   
+   ![image](screenshots/dependency.png) 
 - 访问链路保护系统: http://localhost:8088/hystrix/monitor?stream=http%3A%2F%2Fturbine-server%3A8989%2Fturbine.stream, 如下: 
   ![image](screenshots/hystrix.png) 
 - 访问ELK日志系统: http://localhost:5601, 如下: 
   ![image](screenshots/elk.png) 
-- 使用jvisualvm监控JVM实时性能指标, 如下: 
+- 使用jvisualvm监控JVM实时性能指标, 内存占用分析如下:    
   ![image](screenshots/jvisualvm.png) 
-  ![image](screenshots/threads.png) 
+  线程性能分析如下:    
+  ![image](screenshots/threads.png) 
   
