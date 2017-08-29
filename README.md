@@ -23,7 +23,7 @@ SpringCloud 微服务综合实例。
 - [ ] RPC调用
 - [ ] 其他最佳实践
 
-## Features:    
+## Overview:    
 - 系统全景图:    
   ![image](screenshots/microservices-operations-reference-model.png)
 - 技术实现:    
