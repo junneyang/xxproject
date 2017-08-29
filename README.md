@@ -44,34 +44,36 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   容器化部署 | Docker Compose | --          
       
 ## Compile:
-- 普通Jar包: mvn clean package
-- Docker镜像: mvn clean package docker:build,  镜像列表:    
+- 编译为Jar包: mvn clean package
+- 编译构建为Docker镜像: mvn clean package docker:build,  镜像列表:    
   ![image](screenshots/docker_images.png)
   
 ## Deploy:
-- 普通Jar方式启动: 参考READM
-- Docker一键部署: source bootstrap.rc && docker-compose up -d, 共17个容器运行:    
+- Jar方式部署: 可参考READM步骤
+- Docker方式部署: source bootstrap.rc && docker-compose up -d, 检查以下17个容器正常运行:    
   ![image](screenshots/deploy_docker.png) 
-- 部署完成, 访问Eureka, 注册的服务实例如下:  
+- 部署完成, 访问Eureka, 查看注册的服务实例如下:  
   ![image](screenshots/eureka.png) 
   
 ## Enjoy:
-- 访问OAuth Server: http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536, 
-  输入用户名密码(admin/passw0rd)
+- 访问OAuth Server: 
+  http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536, 
+  输入用户名密码(admin/passw0rd)     
 - 同意OAuth授权, 如下:    
   ![image](screenshots/approval.png) 
-- 页面跳转到: http://example.com/?code=5J4vJ8&state=97536, 获取CODE, 如下:
+- 页面跳转到: http://example.com/?code=5J4vJ8&state=97536, 该页面可以获取CODE, 如下:
   ![image](screenshots/auth.png) 
-- CODE=5J4vJ8
-- 根据CODE获取TOKEN: 
+- 通过CODE获取TOKEN: 
   ```
+  CODE=5J4vJ8
   curl acme:acmesecret@localhost:9999/uaa/oauth/token \
 	-d grant_type=authorization_code \
 	-d client_id=acme \
 	-d redirect_uri=http://example.com \
 	-d code=$CODE -s | jq .
+  TOKEN=bd34faf8-dcd0-4aed-a903-c8a90cb7a731
   ```
-- TOKEN=bd34faf8-dcd0-4aed-a903-c8a90cb7a731, 以上步骤如下:
+- 以上获取TOKEN步骤截图如下:
   ![image](screenshots/token.png) 
 - 访问API服务: http://localhost:5555/api/product-api-service/product-api-composite, 返回消息头带X-RequestId, 如下: 
   ![image](screenshots/api.png) 
