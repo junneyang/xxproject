@@ -82,9 +82,9 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
 - 访问API服务: http://localhost:5555/api/product-api-service/product-api-composite,     
   返回成功, 并且消息头携带X-RequestId, 如下:   
   ![image](screenshots/api.png) 
-- 访问追踪系统: http://localhost:7777/zipkin/,   
-  - 实际服务调用示意图:      
-    ![image](screenshots/call-graph.png) 
+- 访问追踪系统: http://localhost:7777/zipkin/,       
+  - 实际服务调用示意图:         
+    ![image](screenshots/call-graph.png)      
   - 调用链分析如下:   
     ![image](screenshots/trace.png) 
   - 服务依赖拓扑图如下:   
