@@ -46,9 +46,22 @@ SpringCloud 微服务综合实例。
 - 普通Jar包: mvn clean package
 - Docker镜像: mvn clean package docker:build,  镜像列表:    
   ![image](screenshots/docker_images.png)
+  
 ## Deploy:
 - 普通Jar包方式启动: 参考READM
 - Docker方式启动: source bootstrap.rc && docker-compose up -d, 共17个容器运行:    
   ![image](screenshots/deploy_docker.png) 
   
-  
+## Enjoy:
+- 访问OAuth Server: http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536, 输入用户名密码(admin/passw0rd), 同意OAuth授权, 页面跳转到: http://example.com/?code=5J4vJ8&state=97536, 获取CODE
+- CODE=5J4vJ8
+- 根据CODE获取TOKEN: 
+  ```
+  curl acme:acmesecret@localhost:9999/uaa/oauth/token \
+	-d grant_type=authorization_code \
+	-d client_id=acme \
+	-d redirect_uri=http://example.com \
+	-d code=$CODE -s | jq .
+  ```
+- TOKEN=bd34faf8-dcd0-4aed-a903-c8a90cb7a731, 以上步骤如下:
+  ![image](screenshots/token.png) 
