@@ -25,7 +25,9 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
 
 ## Overview:    
 - 系统全景图:    
-  ![image](screenshots/microservices-operations-reference-model.png)
+
+  ![image](screenshots/microservices-operations-reference-model.png)    
+  
 - 技术实现:    
 
   | 服务 | 实现方案 | 项目 |   
@@ -44,13 +46,13 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   容器化部署 | Docker Compose | --          
       
 ## Compile:
-- 编译构建为Jar包: `mvn clean package`
+- 编译构建为Jar包: `mvn clean package`    
 - 编译构建为Docker镜像: `mvn clean package docker:build`,  镜像列表:    
   ![image](screenshots/docker_images.png)
   
 ## Deploy:
-- Jar方式部署: `可参考READM步骤`
-- Docker方式部署: `source bootstrap.rc && docker-compose up -d`, 检查以下17个容器正常运行:    
+- Jar方式部署: `可参考READM步骤`    
+- Docker方式部署: `source bootstrap.rc && docker-compose up -d`, 检查以下17个容器正常运行:        
   ![image](screenshots/deploy_docker.png) 
 - 部署完成, 访问Eureka, 查看注册的服务实例如下:  
   ![image](screenshots/eureka.png) 
