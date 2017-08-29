@@ -40,7 +40,7 @@ SpringCloud 微服务综合实例。
   CORE SERVICE | -- | core/product-service && core/review-service    
   COMPOSITE SERVICE | -- | composite/product-composite-service   
   API SERVICE | -- | api/product-api-service   
-  日志处理 | ELK | --
+  日志处理 | ELK | --    
 
 
 ## Compile:
