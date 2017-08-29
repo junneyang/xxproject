@@ -23,6 +23,16 @@ SpringCloud 微服务综合实例。
 - [ ] RPC调用
 - [ ] 其他最佳实践
 
+## Features:    
+- 系统全景图:    
+  ![image](screenshots/microservices-operations-reference-model.png)
+- 技术实现:    
+| 服务                  | 实现方案                   | 项目代码                   |
+|-----------------------|:-------------------------:|:-------------------------:|
+| 分布式配置中心         | SpringCloud Config Server | support/config-server      |
+| 服务注册/负载均衡      | Netflix Eureka            |
+| zebra stripes | are neat      |
+
 ## Compile:
 - 普通Jar包: mvn clean package
 - Docker镜像: mvn clean package docker:build,  镜像列表:    
