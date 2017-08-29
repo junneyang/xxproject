@@ -51,7 +51,9 @@ SpringCloud 微服务综合实例。
 - 普通Jar包方式启动: 参考READM
 - Docker方式启动: source bootstrap.rc && docker-compose up -d, 共17个容器运行:    
   ![image](screenshots/deploy_docker.png) 
-  
+- 访问Eureka, 服务实例如下:  
+  ![image](screenshots/eureka.png) 
+  
 ## Enjoy:
 - 访问OAuth Server: http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536, 输入用户名密码(admin/passw0rd), 同意OAuth授权, 页面跳转到: http://example.com/?code=5J4vJ8&state=97536, 获取CODE, 如下:  
   ![image](screenshots/auth.png) 
@@ -66,3 +68,13 @@ SpringCloud 微服务综合实例。
   ```
 - TOKEN=bd34faf8-dcd0-4aed-a903-c8a90cb7a731, 以上步骤如下:
   ![image](screenshots/token.png) 
+- 访问API服务: http://localhost:5555/api/product-api-service/product-api-composite, 返回消息头带X-RequestId, 如下: 
+  ![image](screenshots/api.png) 
+- 访问追踪系统: http://localhost:7777/zipkin/, 如下: 
+  ![image](screenshots/trace.png) 
+  ![image](screenshots/dependency.png) 
+- 访问链路保护系统: http://localhost:8088/hystrix/monitor?stream=http%3A%2F%2Fturbine-server%3A8989%2Fturbine.stream, 如下: 
+  ![image](screenshots/hystrix.png) 
+- 访问ELK日志系统: http://localhost:5601, 如下: 
+  ![image](screenshots/elk.png) 
+  
