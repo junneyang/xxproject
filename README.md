@@ -39,10 +39,11 @@ SpringCloud 微服务综合实例。
   OAuth2认证授权 | SpringCloud Security OAuth | support/auth-server    
   CORE SERVICE | -- | core/product-service & core/review-service    
   COMPOSITE SERVICE | -- | composite/product-composite-service   
-  API SERVICE | -- | api/product-api-service       
-  日志处理 | ELK | --       
-     
-     
+  API SERVICE | -- | api/product-api-service          
+  日志处理 | ELK | --               
+      
+          
+	     
 ## Compile:
 - 普通Jar包: mvn clean package
 - Docker镜像: mvn clean package docker:build,  镜像列表:    
