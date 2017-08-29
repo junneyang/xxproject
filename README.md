@@ -28,7 +28,7 @@ SpringCloud 微服务综合实例。
   ![image](screenshots/microservices-operations-reference-model.png)
 - 技术实现:    
   | 服务 | 实现方案 | 项目 |   
-  | ------------ | ------------- | ------------- |      
+  | ------------ | :-------------: | -------------: |      
   分布式配置中心 | SpringCloud Config Server | support/config-server    
   服务注册/负载均衡 | Netflix Eureka | support/eureka-server    
   客户端负载均衡 | NetFlix Ribbon | None    
