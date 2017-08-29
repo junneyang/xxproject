@@ -35,7 +35,7 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   客户端负载均衡 | NetFlix Ribbon | --      
   链路保护与监控 | NetFlix Hystrix | support/turbine-server & support/hystrix-dashboard    
   API网关 | NetFlix Zuul | support/zuul-server    
-  分布式追踪 | SpringCloud Sleuth | support/zipkin-server    
+  分布式追踪调用链分许 | SpringCloud Sleuth | support/zipkin-server        
   OAuth2认证授权 | SpringCloud Security OAuth | support/auth-server       
   基础服务 | -- | core/product-service & core/review-service         
   聚合服务 | -- | composite/product-composite-service          
