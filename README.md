@@ -44,7 +44,7 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   容器化部署 | Docker Compose | --          
       
 ## Compile:
-- 编译为Jar包: `mvn clean package`
+- 编译构建为Jar包: `mvn clean package`
 - 编译构建为Docker镜像: `mvn clean package docker:build`,  镜像列表:    
   ![image](screenshots/docker_images.png)
   
@@ -90,9 +90,9 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   ![image](screenshots/hystrix.png) 
 - 访问ELK日志系统: http://localhost:5601, 如下: 
   ![image](screenshots/elk.png) 
-- 使用jvisualvm监控JVM实时性能指标,     
-  - CPU、内存占用分析如下:    
-    ![image](screenshots/jvisualvm.png) 
-  - 线程视角性能分析如下:      
-    ![image](screenshots/threads.png) 
+- 使用jvisualvm监控JVM实时性能指标,         
+  - CPU、内存占用分析如下:    
+    ![image](screenshots/jvisualvm.png)         
+  - 线程视角性能分析如下:      
+    ![image](screenshots/threads.png)     
   
