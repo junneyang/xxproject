@@ -40,11 +40,11 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   CORE SERVICE | -- | core/product-service & core/review-service    
   COMPOSITE SERVICE | -- | composite/product-composite-service   
   API SERVICE | -- | api/product-api-service          
-  日志处理 | ELK | --               
-  容器化部署 | Docker Compose | --    
-      
-          
-	     
+  日志处理 | ELK | --                 
+  容器化部署 | Docker Compose | --       
+         
+             
+	        
 ## Compile:
 - 普通Jar包: mvn clean package
 - Docker镜像: mvn clean package docker:build,  镜像列表:    
