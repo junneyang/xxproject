@@ -86,7 +86,7 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
     ![image](screenshots/dependency.png) 
 - 访问链路保护系统:     
   http://localhost:8088/hystrix/monitor?stream=http%3A%2F%2Fturbine-server%3A8989%2Fturbine.stream,     
-  链路断路器状态如下, 可以看到断路器状态, 调用次数, 失败次数等信息: 
+  链路断路器状态如下, 可以看到断路器状态, 调用次数, 失败次数、线程池等信息: 
   ![image](screenshots/hystrix.png) 
 - 访问ELK日志系统: http://localhost:5601, 如下: 
   ![image](screenshots/elk.png) 
