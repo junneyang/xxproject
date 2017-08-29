@@ -56,8 +56,8 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   ![image](screenshots/eureka.png) 
   
 ## Enjoy:
-- 访问OAuth Server: 
-  http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536, 
+- 访问OAuth Server:     
+  http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536,     
   输入用户名密码(admin/passw0rd)     
 - 同意OAuth授权, 如下:    
   ![image](screenshots/approval.png) 
@@ -81,7 +81,8 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   ![image](screenshots/trace.png) 
   服务依赖拓扑图如下:   
    ![image](screenshots/dependency.png) 
-- 访问链路保护系统: http://localhost:8088/hystrix/monitor?stream=http%3A%2F%2Fturbine-server%3A8989%2Fturbine.stream, 如下: 
+- 访问链路保护系统:     
+  http://localhost:8088/hystrix/monitor?stream=http%3A%2F%2Fturbine-server%3A8989%2Fturbine.stream, 如下: 
   ![image](screenshots/hystrix.png) 
 - 访问ELK日志系统: http://localhost:5601, 如下: 
   ![image](screenshots/elk.png) 
