@@ -29,12 +29,11 @@ SpringCloud 微服务综合实例。
 - 技术实现:    
 
   | 服务 | 实现方案 | 项目 |   
-  | ------------------- | --------------------- | -------------------------------------------------- |      
+  | ------------------- | ------------------- | ------------------- |      
   分布式配置中心 | SpringCloud Config Server | support/config-server     
   服务注册/负载均衡 | Netflix Eureka | support/eureka-server     
   客户端负载均衡 | NetFlix Ribbon | --      
-  
-  链路保护与监控 | NetFlix Hystrix | support/turbine-server & support/hystrix-dashboard    
+  链路保护与监控 | NetFlix Hystrix | support/turbine-server & support/hystrix-dashboard    
   API网关 | NetFlix Zuul | support/zuul-server    
   分布式追踪 | SpringCloud Sleuth | support/zipkin-server    
   OAuth2认证授权 | SpringCloud Security OAuth | support/auth-server    
@@ -42,7 +41,7 @@ SpringCloud 微服务综合实例。
   COMPOSITE SERVICE | -- | composite/product-composite-service   
   API SERVICE | -- | api/product-api-service   
   日志处理 | ELK | --    
-
+  
 
 ## Compile:
 - 普通Jar包: mvn clean package
