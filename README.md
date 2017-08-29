@@ -28,13 +28,7 @@ SpringCloud 微服务综合实例。
 - Docker镜像: mvn clean package docker:build
 
 ## Deploy:
-- 普通Jar包方式启动: 
-```
-参考READM
-```
-- Docker方式启动: 
-```
-source bootstrap.rc
-docker-compose up -d
-```
-共17个容器运行: 
+- 普通Jar包方式启动: 参考READM
+
+- Docker方式启动: source bootstrap.rc && docker-compose up -d
+  共17个容器运行: 
