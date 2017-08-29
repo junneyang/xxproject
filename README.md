@@ -56,7 +56,11 @@ SpringCloud 微服务综合实例。
   ![image](screenshots/eureka.png) 
   
 ## Enjoy:
-- 访问OAuth Server: http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536, 输入用户名密码(admin/passw0rd), 同意OAuth授权, 页面跳转到: http://example.com/?code=5J4vJ8&state=97536, 获取CODE, 如下:  
+- 访问OAuth Server: http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536, 
+  输入用户名密码(admin/passw0rd)
+- 同意OAuth授权, 如下:    
+  ![image](screenshots/approval.png) 
+- 页面跳转到: http://example.com/?code=5J4vJ8&state=97536, 获取CODE, 如下:
   ![image](screenshots/auth.png) 
 - CODE=5J4vJ8
 - 根据CODE获取TOKEN: 
