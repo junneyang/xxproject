@@ -52,11 +52,11 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   ![image](screenshots/docker_images.png)
   
 ## Deploy:
-- 普通Jar包方式启动: 参考READM
-- Docker方式启动: source bootstrap.rc && docker-compose up -d, 共17个容器运行:    
+- 普通Jar方式启动: 参考READM
+- Docker一键部署: source bootstrap.rc && docker-compose up -d, 共17个容器运行:    
   ![image](screenshots/deploy_docker.png) 
-- 访问Eureka, 服务实例如下:  
-  ![image](screenshots/eureka.png) 
+- 部署完成, 访问Eureka, 注册的服务实例如下:  
+  ![image](screenshots/eureka.png) 
   
 ## Enjoy:
 - 访问OAuth Server: http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536, 
