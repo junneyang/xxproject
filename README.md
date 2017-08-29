@@ -91,8 +91,8 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
 - 访问ELK日志系统: http://localhost:5601, 如下: 
   ![image](screenshots/elk.png) 
 - 使用jvisualvm监控JVM实时性能指标,     
-  - 内存占用分析如下:    
+  - CPU、内存占用分析如下:    
     ![image](screenshots/jvisualvm.png) 
-  - 线程性能分析如下:    
+  - 线程视角性能分析如下:      
     ![image](screenshots/threads.png) 
   
