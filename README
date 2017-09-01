@@ -66,10 +66,12 @@ curl "https://www.xproject.com:5555/api/product-api-service/product-api-composit
 curl "https://www.xproject.com:5555/api/product-api-service/product-api-test" -H  "Authorization: Bearer $TOKEN" -ks | jq .
 
 #################### Delpoy as Docker App
+docker images | grep xproject | awk -F' ' '{ print $3 }' | xargs docker rmi -f
 mvn clean
 mvn package docker:build
-docker images | grep none | awk '{print $3 }' | xargs docker rmi
+docker rmi $(docker images -qa -f dangling=true)
 docker volume rm $(docker volume ls -qf dangling=true)
+rm -rf /var/lib/docker/aufs/diff/*-removing
 source bootstrap.rc
 docker-compose rm -sf
 docker-compose up -d
@@ -92,4 +94,11 @@ keytool -import -v -alias client -file client.cer -keystore server.keystore -sto
 
 keytool -list -keystore server.keystore -storepass passw0rd
 
+# Ref: MicroService Framework
+# http://blog.csdn.net/showgood119/article/details/55510685
+# https://www.zhihu.com/question/50806354
+# http://blog.csdn.net/qq_32971807/article/details/54693254
+# https://segmentfault.com/p/1210000008728111
+# https://github.com/yidongnan/grpc-spring-boot-starter/tree/master/examples
+# https://fuxiaopang.gitbooks.io/learnelasticsearch/getting_started/tutorial_conclusion.html
 
