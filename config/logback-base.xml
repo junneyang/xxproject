@@ -77,9 +77,9 @@
 	</appender>
 	
 	<appender name="LOGSTASH_TCP" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+		<!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
-		</filter>
+		</filter> -->
 		<if condition='property("SPRING_PROFILES_ACTIVE").contains("docker")'>
 			<then>
 				<destination>${LOGSTASH_SERVER}:${LOGSTASH_TCP_SERVER_PORT}</destination>
