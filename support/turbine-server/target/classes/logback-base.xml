@@ -77,9 +77,10 @@
 	</appender>
 	
 	<appender name="LOGSTASH_TCP" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+	<!-- <appender name="LOGSTASH_TCP" class="net.logstash.logback.appender.LogstashAccessTcpSocketAppender"> -->
+		<!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
-		</filter>
+		</filter> -->
 		<if condition='property("SPRING_PROFILES_ACTIVE").contains("docker")'>
 			<then>
 				<destination>${LOGSTASH_SERVER}:${LOGSTASH_TCP_SERVER_PORT}</destination>
@@ -88,10 +89,22 @@
 				<destination>${LOGSTASH_SERVER_HOST}:${LOGSTASH_TCP_SERVER_PORT}</destination>
 			</else>
 		</if>
-		<!-- net.logstash.logback.encoder.AccessEventCompositeJsonEncoder -->
+		
 		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+		<!-- <encoder class="net.logstash.logback.encoder.AccessEventCompositeJsonEncoder"> -->
 		  <providers>
 		    <!-- <mdc/> -->
+		    <!-- <method/>
+		    <protocol/>
+		    <statusCode/>
+		    <requestedUrl/>
+		    <requestedUri/>
+		    <remoteHost/>
+		    <remoteUser/>
+		    <contentLength/>
+		    <elapsedTime/>
+		    <requestHeaders/>
+		    <responseHeaders/> -->
 		    <pattern>
 		      <pattern>
 		        {

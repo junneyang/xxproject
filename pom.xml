@@ -20,7 +20,7 @@
 		<jmxremote.port>8888</jmxremote.port>
 		
 		<!-- override springboot logback.version -->
-		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
+		<!-- <ch.qos.logback.version>1.2.3</ch.qos.logback.version> -->
 	</properties>
 	
 	<!-- <profiles>  
@@ -140,6 +140,24 @@
 			<groupId>org.codehaus.janino</groupId>
 			<artifactId>janino</artifactId>
 		</dependency>
+		
+		<!-- https://github.com/logstash/logstash-logback-encoder#tcp-appenders -->
+		<!-- If you get ClassNotFoundException/NoClassDefFoundError/NoSuchMethodError at runtime -->
+        <!-- <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${ch.qos.logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${ch.qos.logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-access</artifactId>
+            <version>${ch.qos.logback.version}</version>
+        </dependency> -->
 
 	</dependencies>
 
