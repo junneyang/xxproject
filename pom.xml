@@ -50,7 +50,8 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<!-- <version>Dalston.RELEASE</version> -->
-				<version>Dalston.SR2</version>
+				<!-- <version>Dalston.SR2</version> -->
+				<version>Dalston.SR3</version>
 				<!-- <version>Dalston.BUILD-SNAPSHOT</version> -->
 				<type>pom</type>
 				<scope>import</scope>
@@ -150,6 +151,7 @@
 				<includes>
 					<include>**/*.xml</include>
 					<include>**/*.txt</include>
+					<include>key/</include>
 				</includes>
 			</resource>
 			<resource>

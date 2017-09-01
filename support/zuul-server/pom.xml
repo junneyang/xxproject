@@ -64,6 +64,25 @@
 	            <artifactId>docker-maven-plugin</artifactId>
 	            <configuration>
 	            	<skipDockerBuild>false</skipDockerBuild>
+	            	<resources>
+						<resource>
+							<targetPath>/opt/java/workspace/xproject/config</targetPath>
+							<directory>${project.parent.parent.basedir}/config</directory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+						</resource>
+						
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<!-- <include>**/*</include> -->
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+					<volumes>
+	            		<volume>/opt/java/workspace/xproject/config</volume>
+	            	</volumes>
 	            	<exposes>
 	                	<expose>5555</expose>
 	                </exposes>

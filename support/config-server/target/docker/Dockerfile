@@ -24,6 +24,11 @@ ADD /opt/java/workspace/xproject/config/1.0.0/zuul-server-docker.properties /opt
 ADD /opt/java/workspace/xproject/config/1.0.0/zuul-server.properties /opt/java/workspace/xproject/config/1.0.0/
 ADD /opt/java/workspace/xproject/config/banner.txt /opt/java/workspace/xproject/config/
 ADD /opt/java/workspace/xproject/config/elk-config/logstash.config /opt/java/workspace/xproject/config/elk-config/
+ADD /opt/java/workspace/xproject/config/key/client.cer /opt/java/workspace/xproject/config/key/
+ADD /opt/java/workspace/xproject/config/key/client.p12 /opt/java/workspace/xproject/config/key/
+ADD /opt/java/workspace/xproject/config/key/client.truststore /opt/java/workspace/xproject/config/key/
+ADD /opt/java/workspace/xproject/config/key/server.cer /opt/java/workspace/xproject/config/key/
+ADD /opt/java/workspace/xproject/config/key/server.keystore /opt/java/workspace/xproject/config/key/
 ADD /opt/java/workspace/xproject/config/logback-base.xml /opt/java/workspace/xproject/config/
 ADD /config-server-1.0.0-RELEASE.jar //
 EXPOSE 7001

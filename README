@@ -11,13 +11,23 @@ source bootstrap.rc && java -jar support/config-server/target/config-server-1.0.
 # http://localhost:7001/service-test01/default/1.0.0
 # support-service: auth-server
 source bootstrap.rc && java -jar support/auth-server/target/auth-server-1.0.0-RELEASE.jar
-# http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536
-# curl acme:acmesecret@localhost:9999/uaa/oauth/token \
+http://localhost:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536
+https://www.xproject.com:9999/uaa/oauth/authorize?response_type=code&client_id=acme&redirect_uri=http://example.com&scope=webshop&state=97536
+
+curl acme:acmesecret@localhost:9999/uaa/oauth/token \
 	-d grant_type=authorization_code \
 	-d client_id=acme \
 	-d redirect_uri=http://example.com \
 	-d code=$CODE -s | jq .
-# curl 'http://localhost:9999/uaa/user' -H  "Authorization: Bearer $TOKEN" -s | jq .
+curl https://acme:acmesecret@www.xproject.com:9999/uaa/oauth/token \
+    -d grant_type=authorization_code \
+    -d client_id=acme \
+    -d redirect_uri=http://example.com \
+    -d code=$CODE -ks | jq .
+
+curl "http://localhost:9999/uaa/user" -H  "Authorization: Bearer $TOKEN" -s | jq .
+curl "https://www.xproject.com:9999/uaa/user" -H  "Authorization: Bearer $TOKEN" -ks | jq .
+
 # support-service: eureka01
 source bootstrap.rc && SPRING_CLOUD_CONFIG_PROFILE=${EUREKA_SERVER01} java -jar support/eureka-server/target/eureka-server-1.0.0-RELEASE.jar
 # support-service: eureka02 
@@ -50,16 +60,36 @@ source bootstrap.rc && java -jar api/product-api-service/target/product-api-serv
 # http://localhost:5555/api/product-api-service/product-api-composite
 
 # test-api
-# curl 'http://localhost:5555/api/product-api-service/product-api-composite' -H  "Authorization: Bearer $TOKEN" -s | jq .
-# curl 'http://localhost:5555/api/product-api-service/product-api-test' -H  "Authorization: Bearer $TOKEN" -s | jq .
+# curl "http://localhost:5555/api/product-api-service/product-api-composite" -H  "Authorization: Bearer $TOKEN" -s | jq .
+curl "https://www.xproject.com:5555/api/product-api-service/product-api-composite" -H  "Authorization: Bearer $TOKEN" -ks | jq .
+# curl "http://localhost:5555/api/product-api-service/product-api-test" -H  "Authorization: Bearer $TOKEN" -s | jq .
+curl "https://www.xproject.com:5555/api/product-api-service/product-api-test" -H  "Authorization: Bearer $TOKEN" -ks | jq .
 
 #################### Delpoy as Docker App
 mvn clean
 mvn package docker:build
 docker images | grep none | awk '{print $3 }' | xargs docker rmi
+docker volume rm $(docker volume ls -qf dangling=true)
 source bootstrap.rc
 docker-compose rm -sf
 docker-compose up -d
 docker-compose ps
 docker-compose up --scale product-service=2
+
+
+# http://www.blogjava.net/icewee/archive/2012/06/04/379947.html
+keytool -validity 365 -genkey -v -alias server -keyalg RSA -keystore server.keystore -dname "CN=www.xproject.com, OU=XPROJECT, O=XPROJECT, L=WuHan, ST=HuBei, C=CN" -storepass passw0rd -keypass passw0rd
+#keytool -validity 365 -genkey -v -alias server -keyalg RSA -keystore server.keystore \
+#	-dname "CN=localhost, OU=XPROJECT, O=XPROJECT, L=WuHan, ST=HuBei, C=CN" -storepass passw0rd -keypass passw0rd
+keytool -export -v -alias server -keystore server.keystore -storepass passw0rd -rfc -file server.cer
+
+keytool -validity 365 -genkeypair -v -alias client -keyalg RSA -storetype PKCS12 -keystore client.p12 -dname "CN=www.xproject.com, OU=XPROJECT, O=XPROJECT, L=WuHan, ST=HuBei, C=CN" -storepass passw0rd -keypass passw0rd
+keytool -export -v -alias client -keystore client.p12 -storetype PKCS12 -storepass passw0rd -rfc -file client.cer
+
+keytool -import -v -alias server -file server.cer -keystore client.truststore -storepass passw0rd -noprompt
+keytool -import -v -alias client -file client.cer -keystore server.keystore -storepass passw0rd -noprompt
+
+
+keytool -list -keystore server.keystore -storepass passw0rd
+
 

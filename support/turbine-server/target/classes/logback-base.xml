@@ -88,6 +88,7 @@
 				<destination>${LOGSTASH_SERVER_HOST}:${LOGSTASH_TCP_SERVER_PORT}</destination>
 			</else>
 		</if>
+		<!-- net.logstash.logback.encoder.AccessEventCompositeJsonEncoder -->
 		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
 		  <providers>
 		    <!-- <mdc/> -->
@@ -103,7 +104,7 @@
 		        	"pid": "${PID:-}",
 		        	"thread": "%t",
 		        	"logger": "%logger",
-		        	"line": "%line",
+		        	"line": "#asLong{%line}",
 		        	"message": "%m%n%wex"
 		        }
 		      </pattern>
@@ -122,6 +123,7 @@
     <logger name="org.hibernate.engine.QueryParameters" level="TRACE" />  
     <logger name="org.hibernate.engine.query.HQLQueryPlan" level="TRACE" />
     <logger name="org.springframework.cloud.sleuth" level="INFO" />
+    <logger name="javax.net.ssl" level="DEBUG" />
 
 	<root level="INFO" additivity="false">
 		<appender-ref ref="STDOUT" />

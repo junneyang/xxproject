@@ -234,6 +234,8 @@ services:
         condition: service_healthy
       auth-server:
         condition: service_healthy
+    extra_hosts:
+      - "${DOMAIN_NAME}:${AUTH_SERVER_HOST}"
     ports:
       - ${ZUUL_SERVER_PORT}:${ZUUL_SERVER_PORT}
     networks:
@@ -245,7 +247,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONFIG_PROFILE=docker
-      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS_CLIENT_STORE} 
     healthcheck:
       test: nc -v -w 5 -z localhost ${ZUUL_SERVER_PORT}
       interval: ${INTERVAL}
@@ -370,6 +372,8 @@ services:
     depends_on:
       auth-server:
         condition: service_healthy
+    extra_hosts:
+      - "${DOMAIN_NAME}:${AUTH_SERVER_HOST}"
     networks:
       - xproject
     volumes:
@@ -379,7 +383,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONFIG_PROFILE=docker
-      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS}
+      - JAVA_TOOL_OPTIONS=${JAVA_TOOL_OPTIONS_CLIENT_STORE} 
     healthcheck:
       test: nc -v -w 5 -z localhost 8080
       interval: ${INTERVAL}
