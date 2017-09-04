@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"commit":"875a9baea5ce8fd9f7c2070771ddac65510cc073","image":"xproject/support/hystrix-dashboard","repo":"https://github.com/junneyang/xxproject.git"}
+=======
+{"commit":"f1b0d076929fc1c00b6acf66ed613423dd53705e","image":"xproject/support/hystrix-dashboard","repo":"https://github.com/junneyang/xxproject.git"}
+>>>>>>> 587b4747eeb97d85ab519ef90cb0e3b97e465401
