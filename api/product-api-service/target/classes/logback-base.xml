@@ -135,8 +135,8 @@
     <logger name="org.hibernate.type" level="TRACE" />
     <logger name="org.hibernate.engine.QueryParameters" level="TRACE" />  
     <logger name="org.hibernate.engine.query.HQLQueryPlan" level="TRACE" />
-    <logger name="org.springframework.cloud.sleuth" level="INFO" />
-    <logger name="javax.net.ssl" level="DEBUG" />
+    <!-- <logger name="javax.net.ssl" level="DEBUG" /> -->
+    <!-- <logger name="org.springframework.cloud.sleuth" level="DEBUG" /> -->
 
 	<root level="INFO" additivity="false">
 		<appender-ref ref="STDOUT" />

@@ -12,7 +12,7 @@
     <logger name="org.hibernate.engine.QueryParameters" level="TRACE" />  
     <logger name="org.hibernate.engine.query.HQLQueryPlan" level="TRACE" /> -->
     
-    <logger name="org.springframework.cloud.sleuth" level="DEBUG" />
+    <!-- <logger name="org.springframework.cloud.sleuth" level="DEBUG" /> -->
 
 	<!-- <root level="INFO" additivity="false">
 		<appender-ref ref="STDOUT" />
