@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.xcompany.xproject</groupId>
 		<artifactId>core</artifactId>
-		<version>1.0.0-RELEASE</version>
+		<version>${PROJECT_VERSION}</version>
 	</parent>
 	
 	<artifactId>review-service</artifactId>

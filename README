@@ -67,6 +67,7 @@ curl "https://www.xproject.com:5555/api/product-api-service/product-api-test" -H
 
 #################### Delpoy as Docker App
 docker images | grep xproject | awk -F' ' '{ print $3 }' | xargs docker rmi -f
+unset JAVA_TOOL_OPTIONS
 mvn clean
 mvn package docker:build
 docker rmi $(docker images -qa -f dangling=true)

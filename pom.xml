@@ -4,11 +4,12 @@
 
 	<groupId>com.xcompany.xproject</groupId>
 	<artifactId>xproject</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>${PROJECT_VERSION}</version>
 	<packaging>pom</packaging>
 
 	<!-- Changing the Java version -->
 	<properties>
+		<PROJECT_VERSION>1.2.0-RELEASE</PROJECT_VERSION>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>

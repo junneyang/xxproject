@@ -106,7 +106,7 @@ services:
       retries: 10
 
   config-server:
-    image: xproject/support/config-server:${PRODUCT_VERSION}-RELEASE
+    image: xproject/support/config-server:${PROJECT_VERSION}
     depends_on:
       logstash:
         condition: service_healthy
@@ -128,7 +128,7 @@ services:
       retries: 10
       
   eureka01:
-    image: xproject/support/eureka-server:${PRODUCT_VERSION}-RELEASE
+    image: xproject/support/eureka-server:${PROJECT_VERSION}
     depends_on:
       config-server:
         condition: service_healthy
@@ -152,7 +152,7 @@ services:
       
 
   eureka02:
-    image: xproject/support/eureka-server:${PRODUCT_VERSION}-RELEASE
+    image: xproject/support/eureka-server:${PROJECT_VERSION}
     depends_on:
       config-server:
         condition: service_healthy
@@ -175,7 +175,7 @@ services:
       retries: 10
       
   zipkin-server:
-    image: xproject/support/zipkin-server:${PRODUCT_VERSION}-RELEASE
+    image: xproject/support/zipkin-server:${PROJECT_VERSION}
     depends_on:
       eureka01:
         condition: service_healthy
@@ -204,7 +204,7 @@ services:
       retries: 10
 
   auth-server:
-    image: xproject/support/auth-server:${PRODUCT_VERSION}-RELEASE
+    image: xproject/support/auth-server:${PROJECT_VERSION}
     depends_on:
       zipkin-server:
         condition: service_healthy
@@ -228,7 +228,7 @@ services:
 
 
   zuul-server:
-    image: xproject/support/zuul-server:${PRODUCT_VERSION}-RELEASE
+    image: xproject/support/zuul-server:${PROJECT_VERSION}
     depends_on:
       zipkin-server:
         condition: service_healthy
@@ -256,7 +256,7 @@ services:
       
 
   turbine-server:
-    image: xproject/support/turbine-server:${PRODUCT_VERSION}-RELEASE
+    image: xproject/support/turbine-server:${PROJECT_VERSION}
     depends_on:
       zipkin-server:
         condition: service_healthy
@@ -281,7 +281,7 @@ services:
       
 
   hystrix-dashboard:
-    image: xproject/support/hystrix-dashboard:${PRODUCT_VERSION}-RELEASE
+    image: xproject/support/hystrix-dashboard:${PROJECT_VERSION}
     depends_on:
       turbine-server:
         condition: service_healthy
@@ -305,7 +305,7 @@ services:
       
 
   product-service:
-    image: xproject/core/product-service:${PRODUCT_VERSION}-RELEASE
+    image: xproject/core/product-service:${PROJECT_VERSION}
     depends_on:
       zipkin-server:
         condition: service_healthy
@@ -326,7 +326,7 @@ services:
       retries: 10
 
   review-service:
-    image: xproject/core/review-service:${PRODUCT_VERSION}-RELEASE
+    image: xproject/core/review-service:${PROJECT_VERSION}
     depends_on:
       zipkin-server:
         condition: service_healthy
@@ -347,7 +347,7 @@ services:
       retries: 10
 
   product-composite-service:
-    image: xproject/composite/product-composite-service:${PRODUCT_VERSION}-RELEASE
+    image: xproject/composite/product-composite-service:${PROJECT_VERSION}
     depends_on:
       zipkin-server:
         condition: service_healthy
@@ -368,7 +368,7 @@ services:
       retries: 10
 
   product-api-service:
-    image: xproject/api/product-api-service:${PRODUCT_VERSION}-RELEASE
+    image: xproject/api/product-api-service:${PROJECT_VERSION}
     depends_on:
       auth-server:
         condition: service_healthy

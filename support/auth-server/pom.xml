@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.xcompany.xproject</groupId>
 		<artifactId>support</artifactId>
-		<version>1.0.0-RELEASE</version>
+		<version>${PROJECT_VERSION}</version>
 	</parent>
 	
 	<artifactId>auth-server</artifactId>
