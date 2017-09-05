@@ -54,7 +54,8 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
 - Jar方式部署: `可参考READM步骤`    
 - Docker方式部署: `source bootstrap.rc && docker-compose up -d`, 检查以下17个容器正常运行:        
 
-  ![image](screenshots/deploy_docker.png) 
+  ![image](screenshots/deploy_docker.png)    
+  ![image](screenshots/compose.png)     
 - 部署完成, 访问Eureka, 查看注册的服务实例如下:  
   ![image](screenshots/eureka.png) 
   
