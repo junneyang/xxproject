@@ -90,6 +90,7 @@
 			</else>
 		</if>
 		
+		<keepAliveDuration>5 minutes</keepAliveDuration>
 		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
 		<!-- <encoder class="net.logstash.logback.encoder.AccessEventCompositeJsonEncoder"> -->
 		  <providers>

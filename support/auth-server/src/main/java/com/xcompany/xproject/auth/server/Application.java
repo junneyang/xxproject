@@ -12,6 +12,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableDiscoveryClient
 public class Application {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
+	
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -59,13 +61,72 @@ public class Application {
 	@EnableAuthorizationServer
 	protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
+//		@Autowired
+//		private ResourceLoader resourceLoader;
 		@Autowired
 		private AuthenticationManager authenticationManager;
+		@Autowired
+		private Environment environment;
 		
+		// Default: InMemoryTokenStore, endpoints.authenticationManager(authenticationManager) source code
 		@Override
 		public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 			endpoints.authenticationManager(authenticationManager);
 		}
+		
+		/*@Override  
+	    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {  
+			
+			TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();  
+		    tokenEnhancerChain.setTokenEnhancers(  
+		      Arrays.asList(tokenEnhancer(), accessTokenConverter()));  
+			
+	        endpoints.tokenStore(tokenStore())  
+	                 .accessTokenConverter(accessTokenConverter())  
+	                 .tokenEnhancer(tokenEnhancerChain)  
+	                 .authenticationManager(authenticationManager);  
+	    }  
+	   
+	    @Bean  
+	    public TokenStore tokenStore() {  
+	        return new JwtTokenStore(accessTokenConverter());  
+	    }  
+	    
+	    @Bean  
+	    public TokenEnhancer tokenEnhancer() {  
+	        return new CustomTokenEnhancer();  
+	    }  
+	   
+	    @Bean  
+	    public JwtAccessTokenConverter accessTokenConverter() {  
+	    	String tokenKey = environment.getProperty("security.oauth2.token.signing.key");
+	        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();  
+	        converter.setSigningKey(tokenKey);  
+	        return converter;
+	        
+	    	String keyPass = environment.getProperty("security.oauth2.token.key.password");
+	    	//String storePass = environment.getProperty("security.oauth2.token.store.password");
+	    	String signingKey = environment.getProperty("security.oauth2.token.signingkey.password");
+	        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+            KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("key/jwtkeystore.jks"), keyPass.toCharArray())
+                    .getKeyPair(signingKey);
+            // /opt/java/workspace/xproject/config/key /opt/java/workspace/xproject/config/key/jwtkeystore.jks
+            KeyPair keyPair = new KeyStoreKeyFactory(new FileSystemResource("/opt/java/workspace/xproject/config/key/jwtkeystore.jks"), keyPass.toCharArray())
+            .getKeyPair(signingKey);
+            KeyPair keyPair = new KeyStoreKeyFactory(resourceLoader.getResource("classpath:key/jwtkeystore.jks"), keyPass.toCharArray())
+            .getKeyPair(signingKey);
+            converter.setKeyPair(keyPair);
+            return converter;
+	    }  
+	   
+	    @Bean  
+	    @Primary  
+	    public DefaultTokenServices tokenServices() {  
+	        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();  
+	        defaultTokenServices.setTokenStore(tokenStore());  
+	        defaultTokenServices.setSupportRefreshToken(true);  
+	        return defaultTokenServices;  
+	    }  */
 		
 		@Override
 		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {

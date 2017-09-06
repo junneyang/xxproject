@@ -96,6 +96,48 @@ keytool -import -v -alias client -file client.cer -keystore server.keystore -sto
 
 keytool -list -keystore server.keystore -storepass passw0rd
 
+
+
+# JWT
+# http://blog.csdn.net/zhao1949/article/details/68064984
+# http://www.jianshu.com/p/6307c89fe3fa
+# https://github.com/Baeldung/spring-security-oauth/
+# https://github.com/junneyang/spring-cloud-security-oauth2-jwt
+keytool -genkeypair -alias jwtstote -keyalg RSA -keypass passw0rd -keystore jwtkeystore.jks -dname "CN=www.xproject.com, OU=XPROJECT, O=XPROJECT, L=WuHan, ST=HuBei, C=CN" -storepass passw0rd
+keytool -list -rfc --keystore jwtkeystore.jks | openssl x509 -inform pem -pubkey
+
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg8Duclg0/nXNSGWLi6al
+9baMmwSKeO1cO2UM+ZS/85GYF7oqjh5bg8ibKf11uSnDD1eo/TPgpY+Zcw3HLQxS
+WEzsR+1mtw3cRzH5Xu7YNDzAFa3XswMtd75eaIH3WnjuWDMdOtkunm0hqesFASeK
+QVPDYH5aC/rMWc9MVzKtx0PE8YeDpJGe396nnZFJa1a6HdJg39ZL0SwMPFtG5CTA
+Q5G9rSU6SWx5OXVpZlgv9TxU5GGCTPDa8BafvrfFCrLiVZhjU5wQZ+26JBTz4Kt5
+r3nzNGlSSFRTBD4M8/gSU1q279uCi1/mR61IgFxd8YAgnTIbjQXN9euWKQLmBp8h
+qwIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN CERTIFICATE-----
+MIIDezCCAmOgAwIBAgIEAUV+7jANBgkqhkiG9w0BAQsFADBuMQswCQYDVQQGEwJD
+TjEOMAwGA1UECBMFSHVCZWkxDjAMBgNVBAcTBVd1SGFuMREwDwYDVQQKEwhYUFJP
+SkVDVDERMA8GA1UECxMIWFBST0pFQ1QxGTAXBgNVBAMTEHd3dy54cHJvamVjdC5j
+b20wHhcNMTcwOTA1MTAwOTA1WhcNMTcxMjA0MTAwOTA1WjBuMQswCQYDVQQGEwJD
+TjEOMAwGA1UECBMFSHVCZWkxDjAMBgNVBAcTBVd1SGFuMREwDwYDVQQKEwhYUFJP
+SkVDVDERMA8GA1UECxMIWFBST0pFQ1QxGTAXBgNVBAMTEHd3dy54cHJvamVjdC5j
+b20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCDwO5yWDT+dc1IZYuL
+pqX1toybBIp47Vw7ZQz5lL/zkZgXuiqOHluDyJsp/XW5KcMPV6j9M+Clj5lzDcct
+DFJYTOxH7Wa3DdxHMfle7tg0PMAVrdezAy13vl5ogfdaeO5YMx062S6ebSGp6wUB
+J4pBU8NgfloL+sxZz0xXMq3HQ8Txh4OkkZ7f3qedkUlrVrod0mDf1kvRLAw8W0bk
+JMBDkb2tJTpJbHk5dWlmWC/1PFTkYYJM8NrwFp++t8UKsuJVmGNTnBBn7bokFPPg
+q3mvefM0aVJIVFMEPgzz+BJTWrbv24KLX+ZHrUiAXF3xgCCdMhuNBc3165YpAuYG
+nyGrAgMBAAGjITAfMB0GA1UdDgQWBBSqgHn0egrll8owOJG9UWONjI2kmDANBgkq
+hkiG9w0BAQsFAAOCAQEADeM4X3EMxvlMKLe9geyLbLHjnGil6jV1GJA0ea/MvkVt
+dJ0K6jHYkS7NsjP/vguforg+3pGi734Gj2107DvB/revKeqkUl0TV3g22toTY3gX
+jG0FX4QBzQfKMUuzBlkJs5QavoeI91zKibL1/GKhZ6UPs927PYvrPT4xfo+ov7Qw
+CZt2NBiO/Ga1WvXE6bQVlxKqUlEe8/wMWnJ3KXocBLEYUI7UqFLJlprmW+jRV8MN
+mch1pnEOixSCx7waem7MV7Ws7IA4PCxih0L5vx10IemAgEnsbGZhh7O+1+IEFVwC
+/fuGwdfJHPXrLG0lWmThdHGFqHYbYjheZTLo2u6gcA==
+-----END CERTIFICATE-----
+
+
 # Ref: MicroService Framework
 # http://blog.csdn.net/showgood119/article/details/55510685
 # https://www.zhihu.com/question/50806354

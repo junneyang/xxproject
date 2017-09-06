@@ -170,8 +170,9 @@
 				<includes>
 					<include>**/*.xml</include>
 					<include>**/*.txt</include>
-					<include>key/</include>
+					<include>key/*.*</include>
 				</includes>
+				<!-- <targetPath>resources</targetPath> -->
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>

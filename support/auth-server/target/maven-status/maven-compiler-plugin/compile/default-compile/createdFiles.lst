@@ -1,2 +1,3 @@
 com/xcompany/xproject/auth/server/Application.class
+com/xcompany/xproject/auth/server/CustomTokenEnhancer.class
 com/xcompany/xproject/auth/server/Application$OAuth2Config.class
