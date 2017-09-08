@@ -1,5 +1,0 @@
-FROM anapsix/alpine-java:8_jdk
-MAINTAINER https://github.com/junneyang
-ADD /hystrix-dashboard-1.2.0-RELEASE.jar //
-EXPOSE 8088
-CMD ["java", "-jar", "-Dcom.sun.management.jmxremote.local.only=false", "-Dcom.sun.management.jmxremote=true", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Dcom.sun.management.jmxremote.port=8888", "/hystrix-dashboard-1.2.0-RELEASE.jar"]

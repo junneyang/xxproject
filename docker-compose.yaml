@@ -84,8 +84,8 @@ services:
 
   zipkin-mysql:
     image: mysql:5.6
-    ports:
-      - ${ZIPKIN_MYSQL_PORT}:${ZIPKIN_MYSQL_PORT}
+#    ports:
+#      - ${ZIPKIN_MYSQL_PORT}:${ZIPKIN_MYSQL_PORT}
     networks:
       - xproject
     volumes:
@@ -101,6 +101,29 @@ services:
       - MYSQL_DATABASE=${ZIPLIN_MYSQL_DB}
     healthcheck:
       test: mysqladmin ping -u${ZIPKIN_MYSQL_USER} -p${ZIPKIN_MYSQL_PASSWORD}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 10
+
+  auth-mysql:
+    image: mysql:5.6
+    ports:
+      - ${AUTH_MYSQL_PORT}:${AUTH_MYSQL_PORT}
+    networks:
+      - xproject
+    volumes:
+      - "data-auth-mysql:/var/lib/mysql"
+    env_file:
+      - bootstrap.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONFIG_PROFILE=docker
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${AUTH_MYSQL_USER}
+      - MYSQL_PASSWORD=${AUTH_MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${AUTH_MYSQL_DB}
+    healthcheck:
+      test: mysqladmin ping -u${AUTH_MYSQL_USER} -p${AUTH_MYSQL_PASSWORD}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
       retries: 10
@@ -395,6 +418,7 @@ networks:
 volumes:
   data-rabbit:
   data-zipkin-mysql:
+  data-auth-mysql:
   data-logs:
 
 #######################Useful Reference#########################

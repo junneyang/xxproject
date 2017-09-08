@@ -1,10 +1,14 @@
 package com.xcompany.xproject.auth.server;
 import java.security.Principal;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -12,13 +16,19 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -64,15 +74,52 @@ public class Application {
 //		@Autowired
 //		private ResourceLoader resourceLoader;
 		@Autowired
+		@Qualifier("authenticationManagerBean")
 		private AuthenticationManager authenticationManager;
 		@Autowired
-		private Environment environment;
+        private DataSource dataSource;
+		/*@Autowired
+		private Environment environment;*/
 		
+		/*https://stackoverflow.com/questions/34170281/spring-boot-oauth2-with-jdbc-token-store-gives-oauth-access-token-relation-doesn
+		 * http://blog.csdn.net/haiyan_qi/article/details/52384734
+		 * http://blog.csdn.net/neosmith/article/details/52539927
+		 * https://github.com/spring-projects/spring-security-oauth/blob/master/spring-security-oauth2/src/test/resources/schema.sql
+		 */
+		@Bean 
+        public TokenStore tokenStore() {
+            return new JdbcTokenStore(dataSource);
+        }
+        @Bean 
+        public ClientDetailsService clientDetails() {
+            return new JdbcClientDetailsService(dataSource);
+        }
+        @Bean
+        @Primary
+        public DefaultTokenServices tokenServices() {
+            DefaultTokenServices tokenServices = new DefaultTokenServices();
+            tokenServices.setTokenStore(tokenStore());
+	        tokenServices.setSupportRefreshToken(true);
+	        tokenServices.setClientDetailsService(clientDetails());
+	        tokenServices.setAccessTokenValiditySeconds( (int) TimeUnit.DAYS.toSeconds(30)); // 30 Day
+            return tokenServices;
+        }
 		// Default: InMemoryTokenStore, endpoints.authenticationManager(authenticationManager) source code
 		@Override
 		public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-			endpoints.authenticationManager(authenticationManager);
+			endpoints.authenticationManager(authenticationManager)
+				.tokenStore(tokenStore())
+				.tokenServices(tokenServices())
+				.setClientDetailsService(clientDetails());
 		}
+		
+		@Override
+	    public void configure(AuthorizationServerSecurityConfigurer oauthServer) 
+	      throws Exception {
+	        oauthServer
+	          .tokenKeyAccess("permitAll()")
+	          .checkTokenAccess("isAuthenticated()");
+	    }
 		
 		/*@Override  
 	    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {  
@@ -130,7 +177,8 @@ public class Application {
 		
 		@Override
 		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-			clients.inMemory()
+			//clients.inMemory()
+			clients.jdbc(dataSource)
 				.withClient("acme")
 				.secret("acmesecret")
 				.authorizedGrantTypes("authorization_code", "refresh_token", "implicit", "password", "client_credentials")

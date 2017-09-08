@@ -1,4 +1,4 @@
-package com.xcompany.xproject.auth.server;
+/*package com.xcompany.xproject.auth.server;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,3 +25,4 @@ public class CustomTokenEnhancer implements TokenEnhancer {
     }  
 
 }
+*/

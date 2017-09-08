@@ -1,3 +1,3 @@
 /opt/java/workspace/xproject/support/auth-server/src/main/java/com/xcompany/xproject/auth/server/CustomTokenEnhancer.java
+/opt/java/workspace/xproject/support/auth-server/src/main/java/com/xcompany/xproject/auth/server/CustomWebSecurityConfigurer.java
 /opt/java/workspace/xproject/support/auth-server/src/main/java/com/xcompany/xproject/auth/server/Application.java
-/opt/java/workspace/xproject/support/auth-server/src/main/java/com/xcompany/xproject/auth/server/MvcConfig.java

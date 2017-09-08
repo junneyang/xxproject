@@ -1,3 +1,4 @@
+com/xcompany/xproject/auth/server/CustomWebSecurityConfigurer.class
 com/xcompany/xproject/auth/server/Application.class
-com/xcompany/xproject/auth/server/CustomTokenEnhancer.class
+com/xcompany/xproject/auth/server/Application$OAuth2Config$CustomJdbcTokenStore.class
 com/xcompany/xproject/auth/server/Application$OAuth2Config.class
