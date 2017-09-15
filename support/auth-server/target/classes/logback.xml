@@ -14,11 +14,16 @@
     
     <!-- <logger name="org.springframework.cloud.sleuth" level="DEBUG" /> -->
     
+    <logger name="org.springframework.cloud.sleuth" level="ERROR" />
+    <!-- <logger name="org.springframework" level="DEBUG" />
+    <logger name="org.springframework.jdbc" level="DEBUG" />
+    <logger name="org.springframework.security.oauth2" level="DEBUG" /> -->
+    
 
-	<!-- <root level="INFO" additivity="false">
+	<root level="DEBUG" additivity="false">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="ROLLING_FILE_ALL" />
 		<appender-ref ref="ROLLING_FILE_INFO" />
 		<appender-ref ref="ROLLING_FILE_ERROR" />
-	</root> -->
+	</root>
 </configuration>

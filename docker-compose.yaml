@@ -208,6 +208,8 @@ services:
         condition: service_healthy
       zipkin-mysql:
         condition: service_healthy
+      auth-mysql:
+        condition: service_healthy
     ports:
       - ${ZIPKIN_SERVER_PORT}:${ZIPKIN_SERVER_PORT}
     networks:

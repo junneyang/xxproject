@@ -56,7 +56,7 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
 
   ![image](screenshots/deploy_docker.png)    
   ![image](screenshots/compose.png)     
-- 部署完成, 访问Eureka, 查看注册的服务实例如下:  
+- 部署完成, 访问Eureka: http://localhost:8001/, 查看注册的服务实例如下:  
   ![image](screenshots/eureka.png) 
   
 ## Enjoy:

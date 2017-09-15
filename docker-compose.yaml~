@@ -84,8 +84,8 @@ services:
 
   zipkin-mysql:
     image: mysql:5.6
-    ports:
-      - ${ZIPKIN_MYSQL_PORT}:${ZIPKIN_MYSQL_PORT}
+#    ports:
+#      - ${ZIPKIN_MYSQL_PORT}:${ZIPKIN_MYSQL_PORT}
     networks:
       - xproject
     volumes:
@@ -207,6 +207,8 @@ services:
       rabbit-server:
         condition: service_healthy
       zipkin-mysql:
+        condition: service_healthy
+      auth-mysql:
         condition: service_healthy
     ports:
       - ${ZIPKIN_SERVER_PORT}:${ZIPKIN_SERVER_PORT}
