@@ -61,7 +61,7 @@ services:
       timeout: ${TIMEOUT}
       retries: 10
 
-  # Rabbit-Zipkin
+  # Rabbit
   rabbit-server:
     image: rabbitmq:3-management-alpine
     hostname: ${RABBITMQ_SERVER}
@@ -78,6 +78,21 @@ services:
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
     healthcheck:
       test: nc -v -w 5 -z localhost ${RABBITMQ_PORT}
+      interval: ${INTERVAL}
+      timeout: ${TIMEOUT}
+      retries: 10
+
+  # Redis
+  redis-server:
+    image: redis:3-alpine
+    ports:
+      - ${REDIS_SERVER_PORT}:${REDIS_SERVER_PORT}
+    networks:
+      - xproject
+    env_file:
+      - bootstrap.env
+    healthcheck:
+      test: nc -v -w 5 -z localhost ${REDIS_SERVER_PORT}
       interval: ${INTERVAL}
       timeout: ${TIMEOUT}
       retries: 10
@@ -205,6 +220,8 @@ services:
       eureka02:
         condition: service_healthy
       rabbit-server:
+        condition: service_healthy
+      redis-server:
         condition: service_healthy
       zipkin-mysql:
         condition: service_healthy

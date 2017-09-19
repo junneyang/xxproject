@@ -1,0 +1,4 @@
+com/xcompany/xproject/zuul/server/Application.class
+com/xcompany/xproject/zuul/server/AccessFilter.class
+com/xcompany/xproject/zuul/server/Application$CustomHttpServletResponseSpanInjector.class
+com/xcompany/xproject/zuul/server/Application$HttpResponseInjectingTraceFilter.class
