@@ -20,7 +20,7 @@
     <logger name="org.springframework.security.oauth2" level="DEBUG" /> -->
     
 
-	<root level="DEBUG" additivity="false">
+	<root level="INFO" additivity="false">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="ROLLING_FILE_ALL" />
 		<appender-ref ref="ROLLING_FILE_INFO" />

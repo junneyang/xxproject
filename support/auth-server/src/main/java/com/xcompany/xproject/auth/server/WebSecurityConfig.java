@@ -6,15 +6,12 @@ import java.util.Collection;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
@@ -24,11 +21,11 @@ import com.xcompany.xproject.auth.server.model.User;
 import com.xcompany.xproject.auth.server.model.UserRepository;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 //@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 //@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
-//@Order(-20)
+@Order(1)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -51,11 +48,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new SecurityEvaluationContextExtension();
     }
 	
-	@Override
-    public void configure(WebSecurity web) {
-	    web.ignoring().
-	    	antMatchers("/user");
-    }
+//	@Override
+//    public void configure(WebSecurity web) {
+//	    web.ignoring().
+//	    	antMatchers("/user");
+//    }
 	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -63,6 +60,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	//http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     	//http.headers().cacheControl();
     	http.formLogin().permitAll()
+    		.and()
+				.requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
+			.and()
+				.formLogin().loginPage("/login")
 	    	.and()
 		    	.authorizeRequests()
 		    	.antMatchers("/login").permitAll()

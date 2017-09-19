@@ -3,6 +3,7 @@ package com.xcompany.xproject.auth.server;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -12,6 +13,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 @EnableResourceServer
 //@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Order(2)
 public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		
 //	 @Autowired
@@ -59,17 +61,17 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
     public void configure(HttpSecurity http) throws Exception {
 		//http.setSharedObject(AuthenticationManager.class, authenticationManager);
 		// http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		
-        http
+
+		http
         	//.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
         	//.and()
         	//.csrf().disable()
         	//.and()
         		.exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-	        .and()
-	        	.requestMatchers()
-        		.antMatchers("/user")
+//	        .and()
+//	        	.requestMatchers()
+//        		.antMatchers("/user")
             .and()
 	        	.authorizeRequests()
 	        	//.antMatchers("/login").anonymous()

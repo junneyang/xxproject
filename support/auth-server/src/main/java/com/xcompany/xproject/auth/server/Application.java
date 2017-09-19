@@ -11,18 +11,22 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 //https://github.com/Baeldung/spring-security-oauth
 //https://github.com/spring-projects/spring-security-oauth/issues/703
 @SpringBootApplication
 @RestController
-////@EnableResourceServer
+@EnableResourceServer
 ////@EnableAuthorizationServer
 //// Registe To Eureka
 @EnableDiscoveryClient
-public class Application {
+//@SessionAttributes("authorizationRequest")
+public class Application extends WebMvcConfigurerAdapter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 	
 	public static void main(String[] args) {
@@ -44,13 +48,12 @@ public class Application {
             }
         };
     }
-	
-//	@Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/login").setViewName("login");
-//        registry.addViewController("/oauth/confirm_access").setViewName("authorize");
-//    }
-	
+
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/login").setViewName("login");
+		registry.addViewController("/oauth/confirm_access").setViewName("authorize");
+	}
 	
 	@PreAuthorize("#oauth2.hasScope('webshop')")
 	@RequestMapping("/user")
