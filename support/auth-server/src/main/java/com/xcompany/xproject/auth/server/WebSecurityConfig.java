@@ -26,6 +26,7 @@ import com.xcompany.xproject.auth.server.model.UserRepository;
 //@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 //@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
 @Order(1)
+//ENCODE: https://stackoverflow.com/questions/28838530/spring-boot-with-security-oauth2-how-to-use-resource-server-with-web-login-for
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired

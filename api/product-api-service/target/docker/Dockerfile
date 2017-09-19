@@ -31,7 +31,7 @@ ADD /opt/java/workspace/xproject/config/key/jwtkeystore.jks /opt/java/workspace/
 ADD /opt/java/workspace/xproject/config/key/server.cer /opt/java/workspace/xproject/config/key/
 ADD /opt/java/workspace/xproject/config/key/server.keystore /opt/java/workspace/xproject/config/key/
 ADD /opt/java/workspace/xproject/config/logback-base.xml /opt/java/workspace/xproject/config/
-ADD /product-api-service-1.2.0-RELEASE.jar //
+ADD /product-api-service-1.3.0-RELEASE.jar //
 EXPOSE 8080
-CMD ["java", "-jar", "-Dcom.sun.management.jmxremote.local.only=false", "-Dcom.sun.management.jmxremote=true", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Dcom.sun.management.jmxremote.port=8888", "/product-api-service-1.2.0-RELEASE.jar"]
+CMD ["java", "-jar", "-Dcom.sun.management.jmxremote.local.only=false", "-Dcom.sun.management.jmxremote=true", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Dcom.sun.management.jmxremote.port=8888", "/product-api-service-1.3.0-RELEASE.jar"]
 VOLUME /opt/java/workspace/xproject/config
