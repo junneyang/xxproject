@@ -45,6 +45,7 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   普通方式部署 | Ansible | --          
   容器化部署 | Docker Compose | --                  
            
+	        
 ## Compile:
 - 编译构建为Jar包: `mvn clean package`    
 - 编译构建为Docker镜像: `mvn clean package docker:build`,  镜像列表:    
