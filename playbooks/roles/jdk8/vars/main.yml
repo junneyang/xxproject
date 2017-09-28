@@ -1,2 +1,5 @@
-package_name: jdk-8u45-linux-x64.gz
+# package_name: jdk-8u45-linux-x64.gz
+# jdk_version: jdk1.8.0_45
+package_name: jdk-8u144-linux-x64.tar.gz
+jdk_version: jdk1.8.0_144
 install_dir: "{{ work_dir }}/lib"

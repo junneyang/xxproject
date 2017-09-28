@@ -5,7 +5,7 @@
 - name: Unzip jdk
   shell: tar -xzvf "{{ install_dir }}/{{ package_name }}" -C {{ install_dir }}
 - name: Creat soft link
-  shell: ln -sf "{{ install_dir }}/jdk1.8.0_45" "{{ install_dir }}/jdk"
+  shell: ln -sf "{{ install_dir }}/{{ jdk_version }}" "{{ install_dir }}/jdk"
 - name: Set jdk_env copy use template
   template: src=set_env.sh.j2 dest="{{ install_dir }}/set_env.sh"
 - name: Execute script to set jdkenv
