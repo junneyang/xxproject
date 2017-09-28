@@ -43,7 +43,8 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   API服务 | -- | api/product-api-service         
   日志处理 | ELK | --               
   普通方式部署 | Ansible | --                  
-  容器化部署 | Docker Compose | --          
+  容器化部署 | Docker Compose | --          
+                        
                   
                      
 ## Compile:
