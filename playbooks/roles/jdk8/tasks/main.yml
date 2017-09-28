@@ -1,0 +1,14 @@
+- name: Make install dir
+  file: dest={{ install_dir }} owner=root group=root mode=0755 state=directory
+- name: Copy jdk to remote host
+  copy: src={{ package_name }} dest={{ install_dir }}
+- name: Unzip jdk
+  shell: tar -xzvf "{{ install_dir }}/{{ package_name }}" -C {{ install_dir }}
+- name: Creat soft link
+  shell: ln -sf "{{ install_dir }}/jdk1.8.0_45" "{{ install_dir }}/jdk"
+- name: Set jdk_env copy use template
+  template: src=set_env.sh.j2 dest="{{ install_dir }}/set_env.sh"
+- name: Execute script to set jdkenv
+  shell: bash "{{ install_dir }}/set_env.sh"
+- name: Remove files
+  shell: rm "{{ install_dir }}/{{ package_name }}"

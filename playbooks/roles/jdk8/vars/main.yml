@@ -1,0 +1,2 @@
+package_name: jdk-8u45-linux-x64.gz
+install_dir: "{{ work_dir }}/lib"

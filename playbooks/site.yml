@@ -1,0 +1,2 @@
+- include: common.yml
+- include: jdk.yml
