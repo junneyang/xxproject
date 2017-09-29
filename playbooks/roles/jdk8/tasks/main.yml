@@ -3,12 +3,12 @@
 - name: Copy jdk to remote host
   copy: src={{ package_name }} dest={{ install_dir }}
 - name: Unzip jdk
-  shell: tar -xzvf "{{ install_dir }}/{{ package_name }}" -C {{ install_dir }}
+  unarchive: src="{{ install_dir }}/{{ package_name }}" dest={{ install_dir }} copy=no
 - name: Creat soft link
-  shell: ln -sf "{{ install_dir }}/{{ jdk_version }}" "{{ install_dir }}/jdk"
+  file: src="{{ install_dir }}/{{ jdk_version }}" dest="{{ install_dir }}/jdk" force=true owner=root group=root mode=0755 state=link
 - name: Set jdk_env copy use template
   template: src=set_env.sh.j2 dest="{{ install_dir }}/set_env.sh"
 - name: Execute script to set jdkenv
   shell: bash "{{ install_dir }}/set_env.sh"
 - name: Remove files
-  shell: rm "{{ install_dir }}/{{ package_name }}"
+  file: path="{{ install_dir }}/{{ package_name }}" state=absent
