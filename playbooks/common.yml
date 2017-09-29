@@ -1,4 +1,8 @@
 # Apply common configuration to all hosts
+# REF: https://github.com/ansible/ansible-examples/blob/master/wordpress-nginx_rhel7/site.yml
 - hosts: all
+  # remote_user: root
+  remote_user: "{{ user_name }}"
+  sudo: yes
   roles:
     - common

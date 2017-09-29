@@ -1,14 +1,27 @@
 - name: Make install dir
-  file: dest={{ install_dir }} owner=root group=root mode=0755 state=directory
+  file: dest={{ install_dir }} owner={{ user_name }} group={{ user_group }} mode=0755 state=directory
+  tags: jdk8
+
 - name: Copy jdk to remote host
   copy: src={{ package_name }} dest={{ install_dir }}
+  tags: jdk8
+
 - name: Unzip jdk
   unarchive: src="{{ install_dir }}/{{ package_name }}" dest={{ install_dir }} copy=no
+  tags: jdk8
+
 - name: Creat soft link
-  file: src="{{ install_dir }}/{{ jdk_version }}" dest="{{ install_dir }}/jdk" force=true owner=root group=root mode=0755 state=link
+  file: src="{{ install_dir }}/{{ jdk_version }}" dest="{{ install_dir }}/jdk" force=true owner={{ user_name }} group={{ user_group }} mode=0755 state=link
+  tags: jdk8
+
 - name: Set jdk_env copy use template
   template: src=set_env.sh.j2 dest="{{ install_dir }}/set_env.sh"
+  tags: jdk8
+
 - name: Execute script to set jdkenv
   shell: bash "{{ install_dir }}/set_env.sh"
+  tags: jdk8
+
 - name: Remove files
   file: path="{{ install_dir }}/{{ package_name }}" state=absent
+  tags: jdk8

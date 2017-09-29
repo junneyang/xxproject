@@ -1,0 +1,31 @@
+- name: Make install dir
+  file: dest={{ install_dir }} owner={{ user_name }} group={{ user_group }} mode=0755 state=directory
+  tags: es
+
+- name: Copy es to remote host
+  copy: src={{ package_name }} dest={{ install_dir }}
+  tags: es
+
+- name: Unzip es
+  unarchive: src="{{ install_dir }}/{{ package_name }}" dest={{ install_dir }} copy=no
+  tags: es
+
+- name: Creat soft link
+  file: src="{{ install_dir }}/{{ es_version }}" dest="{{ install_dir }}/elasticsearch" force=true owner={{ user_name }} group={{ user_group }} mode=0755 state=link
+  tags: es
+
+- name: Set es_config copy use template
+  template: src=elasticsearch.yml.j2 dest="{{ install_dir }}/elasticsearch/config/elasticsearch.yml"
+  tags: es
+
+- name: Startup ES
+  shell: "source ~/.bash_profile && nohup {{ install_dir }}/elasticsearch/bin/elasticsearch >/dev/null 2>&1 &"
+  tags: es
+
+- name: Wait for ES started
+  wait_for: host={{ ansible_eth0['ipv4']['address'] }} port=9200 delay=10 timeout=300
+  tags: es
+
+- name: Remove files
+  file: path="{{ install_dir }}/{{ package_name }}" state=absent
+  tags: es

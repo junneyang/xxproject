@@ -2,4 +2,4 @@
   remote_user: "{{ user_name }}"
   sudo: no
   roles:
-    - jdk8
+    - es5.6.2

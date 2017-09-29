@@ -1,2 +1,10 @@
-work_dir: /opt/xxproject
+user_name: xxproject
+user_group: xxproject
+work_dir: /home/xxproject
+
 ntpserver: 10.7.7.1
+
+es_cluster_name: xxproject-es-cluster
+es_data_path: /home/xxproject/data/es
+es_log_path: /home/xxproject/logs/es
+
