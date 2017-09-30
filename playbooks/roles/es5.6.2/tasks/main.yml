@@ -18,6 +18,10 @@
   template: src=elasticsearch.yml.j2 dest="{{ install_dir }}/elasticsearch/config/elasticsearch.yml"
   tags: es
 
+- name: Set jvm_config copy use template
+  template: src=jvm.options.j2 dest="{{ install_dir }}/elasticsearch/config/jvm.options"
+  tags: es
+
 - name: Startup ES
   shell: "source ~/.bash_profile && nohup {{ install_dir }}/elasticsearch/bin/elasticsearch >/dev/null 2>&1 &"
   tags: es

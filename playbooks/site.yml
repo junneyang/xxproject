@@ -1,2 +1,3 @@
 - include: common.yml
 - include: jdk.yml
+- include: es.yml

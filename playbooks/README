@@ -1,0 +1,273 @@
+# 停止ES集群
+ansible -i production all -m shell -a "killall java"
+ansible -i production all -m shell -a "rm -rf /home/xxproject/data && rm -rf /home/xxproject/logs"
+# 启动ES集群
+ansible-playbook -i production es.yml
+
+# 测试一下--集群、节点、索引状态
+集群状态: curl -XGET 'localhost:9200/_cat/health?v&pretty'
+节点状态: curl -XGET 'localhost:9200/_cat/nodes?v&pretty'
+索引状态: curl -XGET 'localhost:9200/_cat/indices?v&pretty'
+
+# 测试一下--索引基本操作
+# API规律: <REST Verb> /<Index>/<Type>/<ID>
+创建索引: curl -XPUT 'localhost:9200/customer?pretty&pretty'
+索引状态: curl -XGET 'localhost:9200/_cat/indices?v&pretty'     yellow, 默认五个分片, 1个备份, 只有一个数据节点, 所以状态为yellow
+插入数据即索引文档-需要指定数据表: curl -XPUT 'localhost:9200/customer/external/1?pretty&pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "John Doe"
+}
+'
+获取文档即数据: curl -XGET 'localhost:9200/customer/external/1?pretty&pretty'
+删除索引: curl -XDELETE 'localhost:9200/customer?pretty&pretty'
+索引状态: curl -XGET 'localhost:9200/_cat/indices?v&pretty'
+
+# 测试一下--数据更新
+# ES准实时的特点, 注意与事务型的数据库的区别
+新增数据: curl -XPUT 'localhost:9200/customer/external/1?pretty&pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "John Doe"
+}
+'
+curl -XGET 'localhost:9200/customer/external/1?pretty&pretty'
+更新数据: curl -XPUT 'localhost:9200/customer/external/1?pretty&pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "Jane Doe"
+}
+'
+curl -XGET 'localhost:9200/customer/external/1?pretty&pretty'
+继续新增数据, 换ID: curl -XPUT 'localhost:9200/customer/external/2?pretty&pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "Jane Doe"
+}
+'
+不指定ID新增数据-POST方法-ES自动生成ID返回: curl -XPOST 'localhost:9200/customer/external?pretty&pretty' -H 'Content-Type: application/json' -d'
+{
+  "name": "Jane Doe"
+}
+'
+修改已有字段: curl -XPOST 'localhost:9200/customer/external/1/_update?pretty&pretty' -H 'Content-Type: application/json' -d'
+{
+  "doc": { "name": "Jane Doe" }
+}
+'
+新增字段: curl -XPOST 'localhost:9200/customer/external/1/_update?pretty&pretty' -H 'Content-Type: application/json' -d'
+{
+  "doc": { "name": "Jane Doe", "age": 20 }
+}
+'
+脚本方式修改数据: curl -XPOST 'localhost:9200/customer/external/1/_update?pretty&pretty' -H 'Content-Type: application/json' -d'
+{
+  "script" : "ctx._source.age += 5"
+}
+'
+删除文档: curl -XDELETE 'localhost:9200/customer/external/2?pretty&pretty'
+
+批量新增/更新数据操作: curl -XPOST 'localhost:9200/customer/external/_bulk?pretty&pretty' -H 'Content-Type: application/json' -d'
+{"index":{"_id":"1"}}
+{"name": "John Doe" }
+{"index":{"_id":"2"}}
+{"name": "Jane Doe" }
+'
+
+批量更新/删除操作: curl -XPOST 'localhost:9200/customer/external/_bulk?pretty&pretty' -H 'Content-Type: application/json' -d'
+{"update":{"_id":"1"}}
+{"doc": { "name": "John Doe becomes Jane Doe" } }
+{"delete":{"_id":"2"}}
+'
+
+从本地文件批量插入新数据: curl -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/account/_bulk?pretty&refresh' --data-binary "@accounts.json"
+
+# 测试一下--搜索基本操作
+URL方式搜索: curl -XGET 'localhost:9200/bank/_search?q=*&sort=account_number:asc&pretty&pretty'
+BODY方式搜索: curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} },
+  "_source": ["account_number", "balance"],
+  "sort": [
+    { "balance": "asc" },
+    { "account_number": "asc" }
+  ],
+  "size": 5,
+  "from": 998
+}
+'
+
+WHERE条件查询: curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match": { "account_number": 20 } },
+  "_source": ["account_number", "balance"],
+  "sort": [
+    { "balance": "asc" },
+    { "account_number": "asc" }
+  ],
+  "size": 5,
+  "from": 0
+}
+'
+
+WHERE包含查询: curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match": { "address": "mill" } },
+  "_source": ["account_number", "balance", "address"],
+  "sort": [
+    { "balance": "asc" },
+    { "account_number": "asc" }
+  ],
+  "size": 5,
+  "from": 0
+}
+'
+
+WHERE的OR查询: curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match": { "address": "mill lane" } }
+}
+'
+
+WHERE空格完全匹配: curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_phrase": { "address": "mill lane" } }
+}
+'
+
+WHERE的AND、OR、NOT等组合查询: curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "age": "40" } }
+      ],
+      "must_not": [
+        { "match": { "state": "ID" } }
+      ]
+    }
+  },
+  "size": 1000
+}
+'
+
+# http://www.cnblogs.com/xing901022/p/4975931.html
+# http://www.cnblogs.com/bmaker/p/5480006.html
+# 注意query查询与filter过滤器之间的区别，前者有评分机制，后者没有评分机制速度更快
+curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "query": { 
+    "bool": {
+        "must": [
+            { "match": { "age": "40" } }
+          ],
+        "filter": {
+        "range": {
+          "balance": {
+            "gte": 20000,
+            "lte": 30000
+          }
+        }
+      }
+    }
+  }
+}
+'
+
+# 测试一下--聚合查询即分组查询
+简单聚合分组查询: curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword"
+      }
+    }
+  }
+}
+'
+SELECT state, COUNT(*) FROM bank GROUP BY state ORDER BY COUNT(*) DESC
+
+聚合分组之后求平均值: curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword"
+      },
+      "aggs": {
+        "average_balance": {
+          "avg": {
+            "field": "balance"
+          }
+        }
+      }
+    }
+  }
+}
+'
+SELECT state, COUNT(*), AVG(balance) FROM bank GROUP BY state ORDER BY COUNT(*) DESC
+
+再加上对结果排序: curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword",
+        "order": {
+          "average_balance": "desc"
+        }
+      },
+      "aggs": {
+        "average_balance": {
+          "avg": {
+            "field": "balance"
+          }
+        }
+      }
+    }
+  }
+}
+'
+
+多个分组: curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+  "size": 0,
+  "aggs": {
+    "group_by_age": {
+      "range": {
+        "field": "age",
+        "ranges": [
+          {
+            "from": 20,
+            "to": 30
+          },
+          {
+            "from": 30,
+            "to": 40
+          },
+          {
+            "from": 40,
+            "to": 50
+          }
+        ]
+      },
+      "aggs": {
+        "group_by_gender": {
+          "terms": {
+            "field": "gender.keyword"
+          },
+          "aggs": {
+            "average_balance": {
+              "avg": {
+                "field": "balance"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+'
+
+# 嵌套查询: https://www.v2ex.com/t/300209

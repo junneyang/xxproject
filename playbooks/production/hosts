@@ -1,2 +1,8 @@
-[jdk]
-10.20.0.11
+[es_master_nodes]
+node-01
+node-02
+node-03
+
+[es_data_nodes]
+node-04
+

@@ -13,12 +13,14 @@ sed -i 's/default=1/default=0/g' /boot/grub/grub.conf
 reboot
 
 # Kernel Config
-# 文件描述符&线程数设置
+# 文件描述符&线程数设置&最大锁定内存地址空间
 echo "
 * soft nofile 65536
 * hard nofile 131072
 * soft nproc 2048
 * hard nproc 4096
+* soft memlock unlimited
+* hard memlock unlimited
 " >> /etc/security/limits.conf
 # 线程数设置
 echo "

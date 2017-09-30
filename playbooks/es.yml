@@ -1,5 +1,16 @@
-- hosts: all
+- hosts: es_master_nodes
   remote_user: "{{ user_name }}"
   sudo: no
   roles:
-    - es5.6.2
+    - {role: es5.6.2, es_config: {node.master: true, node.data: false, discovery.zen.ping.unicast.hosts: "node-01, node-02, node-03", discovery.zen.minimum_master_nodes: 2, gateway.recover_after_nodes: 3} }
+  vars:
+    es_heap_size: 512m
+
+- hosts: es_data_nodes
+  remote_user: "{{ user_name }}"
+  sudo: no
+  roles:
+    - {role: es5.6.2, es_config: {node.master: false, node.data: true, discovery.zen.ping.unicast.hosts: "node-01, node-02, node-03", discovery.zen.minimum_master_nodes: 2, gateway.recover_after_nodes: 3} }
+  vars:
+    es_heap_size: 1g
+
