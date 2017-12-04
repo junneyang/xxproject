@@ -55,7 +55,7 @@ SpringCloud 微服务综合实例。分布式配置中心，服务发现&负载�
   
 ## Deploy:
 - Jar方式部署: `可参考READM步骤`    
-- Docker方式部署: `source bootstrap.rc && docker-compose up -d`, 检查以下17个容器正常运行:        
+- Docker方式部署: `source bootstrap.rc && docker-compose up -d`, 检查以下17个容器正常运行（容器数量较多，机器内存最好在8G以上，否则可能导致部分容器启动失败）:        
 
   ![image](screenshots/deploy_docker.png)    
   ![image](screenshots/compose.png)     
